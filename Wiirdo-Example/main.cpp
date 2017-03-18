@@ -4,15 +4,6 @@
 #include "input/WiiRemote.hpp"
 #include "input/Wii.hpp"
 
-// Second, define the singleton type provider function (callback).
-static QObject *wii_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
-{
-    Q_UNUSED(engine)
-    Q_UNUSED(scriptEngine)
-
-    return new wii::Wii();
-}
-
 int main(int argc, char *argv[])
 {
   QGuiApplication app(argc, argv);

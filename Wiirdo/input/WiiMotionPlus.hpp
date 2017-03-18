@@ -2,6 +2,7 @@
 #define WIIMOTIONPLUS_HPP
 
 #include <QObject>
+#include <QVector3D>
 
 #include <wiic/wiicpp.h>
 
@@ -11,7 +12,7 @@ class WiiMotionPlus : public QObject
 {
   Q_OBJECT
 
-  Q_PROPERTY(int gyroscopeThreshold READ getGyroscopeThreshold WRITE setGryoscopeThreshold NOTIFY gyroscopeThresholdChanged)
+  Q_PROPERTY(int gyroscopeThreshold READ getGyroscopeThreshold WRITE setGyroscopeThreshold NOTIFY gyroscopeThresholdChanged)
   Q_PROPERTY(QVector3D rates READ getRates NOTIFY ratesChanged)
   Q_PROPERTY(QVector3D rawRates READ getRawRates NOTIFY rawRatesChanged)
 
