@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>WiimoteTest.qml</file>
+        <file>data/wiimote.jpg</file>
+        <file>data/wiimote.mtl</file>
+        <file>data/wiimote.obj</file>
+        <file>Wiimote.qml</file>
+        <file>Axes.qml</file>
+    </qresource>
+</RCC>
