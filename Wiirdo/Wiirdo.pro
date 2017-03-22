@@ -30,10 +30,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 INCLUDEPATH += \
-    /usr/local/include/wiic
+    /usr/local/include/wiic \
+    ../WiiC/src
 
 LIBS += \
     -L/usr/local/lib \
+    -L../WiiC/wiic \
+    -L../WiiC/wiicpp \
     -lwiic \
     -lwiicpp
 
