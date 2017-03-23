@@ -35,7 +35,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 INCLUDEPATH += \
     ../Wiirdo \
-    ../WiiC/src \
+    ../wiiuse/src \
 
 LIBS += \
     -L$$OUT_PWD/../Wiirdo \
