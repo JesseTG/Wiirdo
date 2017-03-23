@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QQmlListProperty>
 
-#include <wiic/wiicpp.h>
+#include <wiiuse.h>
 #include "input/Accelerometer.hpp"
 #include "input/WiiMotionPlus.hpp"
 
@@ -24,7 +24,12 @@ class WiiRemote : public QObject
   Q_PROPERTY(float battery READ getBattery NOTIFY batteryChanged)
 
 public:
-  explicit WiiRemote(const CWiimote& w, QObject *parent = 0);
+  explicit WiiRemote(wiimote_t* w, QObject *parent = 0);
+  WiiRemote(const WiiRemote& other) = delete;
+  WiiRemote& operator=(const WiiRemote& other) = delete;
+  WiiRemote() = delete;
+  virtual ~WiiRemote();
+  void update();
 
 signals:
   void accelerometerChanged();
@@ -57,7 +62,7 @@ public:
   QString getAddress();
   float getBattery();
 private:
-  CWiimote wiimote;
+  wiimote_t* wiimote;
   Accelerometer accelerometer;
   WiiMotionPlus* motionPlus;
 };

@@ -6,19 +6,26 @@
 #include <QtConcurrent>
 #include <QQmlListProperty>
 
-#include <wiic/wiicpp.h>
+#include <wiiuse.h>
 
 #include "input/WiiRemote.hpp"
 
 namespace wii {
+
+const int MAX_WIIMOTES = 4;
+
 class Wii : public QObject
 {
   Q_OBJECT
 
   Q_PROPERTY(QQmlListProperty<wii::WiiRemote> wiimotes READ getWiimotes NOTIFY wiimotesChanged)
 public:
-  explicit Wii(QObject *parent = 0);
+  explicit Wii(QObject *parent);
+  Wii() : Wii(nullptr) { }
 
+  Wii(const Wii& other) = delete;
+  Wii& operator=(const Wii& other) = delete;
+  virtual ~Wii();
   const QQmlListProperty<wii::WiiRemote>& getWiimotes() const { return _wiimoteProperty; }
 
 signals:
@@ -32,10 +39,11 @@ public slots:
   void poll();
 
 private:
-  CWii wii;
+  wiimote_t** wiimotes;
+  int _connected;
   QQmlListProperty<WiiRemote> _wiimoteProperty;
-  QList<WiiRemote*> _wiimotes; // these are children and will go away upon destruction
-  QFutureWatcher<std::vector<CWiimote>> _futureWatcher;
+  QList<WiiRemote*> _qwiimotes; // these are children and will go away upon destruction
+  QFutureWatcher<int> _futureWatcher;
 };
 }
 

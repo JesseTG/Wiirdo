@@ -30,15 +30,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 INCLUDEPATH += \
-    /usr/local/include/wiic \
-    ../WiiC/src
+    ../wiiuse/src \
 
 LIBS += \
     -L/usr/local/lib \
-    -L../WiiC/wiic \
-    -L../WiiC/wiicpp \
-    -lwiic \
-    -lwiicpp
+    -L../wiiuse \
+    -lwiiuse \
 
 SOURCES += \
     input/WiiRemote.cpp \

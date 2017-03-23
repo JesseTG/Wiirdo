@@ -5,40 +5,32 @@
 namespace wii {
 
 
-WiiMotionPlus::WiiMotionPlus(const CMotionPlus& mp, QObject *parent) :
+WiiMotionPlus::WiiMotionPlus(motion_plus_t* mp, QObject *parent) :
     QObject(parent),
-    motionPlus(mp)
+    _mp(mp)
 {
 
 }
 
 void WiiMotionPlus::calibrate() {
-  motionPlus.Gyroscope.Calibrate();
+  // TODO
 }
 
 int WiiMotionPlus::getGyroscopeThreshold() {
-  return motionPlus.Gyroscope.GetGyroThreshold();
+  return _mp->raw_gyro_threshold;
 }
 
 void WiiMotionPlus::setGyroscopeThreshold(int threshold) {
-  motionPlus.Gyroscope.SetGyroThreshold(threshold);
+  _mp->raw_gyro_threshold = threshold;
 
   gyroscopeThresholdChanged(threshold);
 }
 
 QVector3D WiiMotionPlus::getRates() {
-  QVector3D rates;
-
-  motionPlus.Gyroscope.GetRates(rates[0], rates[1], rates[2]);
-
-  return rates;
+  return QVector3D(_mp->angle_rate_gyro.pitch, _mp->angle_rate_gyro.roll, _mp->angle_rate_gyro.yaw);
 }
 
 QVector3D WiiMotionPlus::getRawRates() {
-  std::array<int, 3> rawRates;
-
-  motionPlus.Gyroscope.GetRawRates(rawRates[0], rawRates[1], rawRates[2]);
-
-  return QVector3D(rawRates[0], rawRates[1], rawRates[2]);
+  return QVector3D(_mp->raw_gyro.pitch, _mp->raw_gyro.roll, _mp->raw_gyro.yaw);
 }
 }

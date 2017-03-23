@@ -2,64 +2,81 @@
 
 namespace wii {
 
-Accelerometer::Accelerometer(const CAccelerometer& _accelerometer, QObject *parent) :
+Accelerometer::Accelerometer(
+    const accel_t* accel_calib,
+    const orient_t* orient,
+    const gforce_t* gforce,
+    const float* ot,
+    const int* at,
+    const vec3b_t* accel,
+    QObject *parent) :
   QObject(parent),
-  accelerometer(_accelerometer)
+  _accel_calib(accel_calib),
+  _orient(orient),
+  _gforce(gforce),
+  _orientThreshold(ot),
+  _accelThreshold(at),
+  _accel(accel)
 {
+}
 
+void Accelerometer::updateFilters() {
 }
 
 float Accelerometer::getOrientationThreshold() {
-  return accelerometer.GetOrientThreshold();
+  return *_orientThreshold;
 }
 
 void Accelerometer::setOrientationThreshold(float threshold) {
-  accelerometer.SetOrientThreshold(threshold);
+  float current = getOrientationThreshold();
 
-  orientationThresholdChanged(threshold);
+  if (qAbs(threshold - current) < 0.0001f) {
+    *const_cast<float*>(_orientThreshold) = threshold;
+
+    orientationThresholdChanged(threshold);
+  }
 }
 
 int Accelerometer::getAccelerationThreshold() {
-  return accelerometer.GetAccelThreshold();
+  return *_accelThreshold;
 }
 
 void Accelerometer::setAccelerationThreshold(int threshold) {
-  accelerometer.SetAccelThreshold(threshold);
+  int current = getAccelerationThreshold();
 
-  accelerationThresholdChanged(threshold);
+  if (threshold != current) {
+    *const_cast<int*>(_accelThreshold) = threshold;
+
+    accelerationThresholdChanged(threshold);
+  }
 }
 
 QVector3D Accelerometer::getGravityCalibration() {
-  QVector3D gravityCalibrated;
-
-  accelerometer.GetGravityCalVector(gravityCalibrated[0], gravityCalibrated[1], gravityCalibrated[2]);
-
-  return gravityCalibrated;
+  return QVector3D(_accel_calib->cal_zero.x, _accel_calib->cal_zero.y, _accel_calib->cal_zero.z);
 }
 
 void Accelerometer::setGravityCalibration(const QVector3D& calibration) {
-  accelerometer.SetGravityCalVector(calibration.x(), calibration.y(), calibration.z());
+  QVector3D current = getGravityCalibration();
 
-  gravityCalibrationChanged(calibration);
+  if (calibration != current) {
+    const_cast<accel_t*>(_accel_calib)->cal_zero.x = static_cast<byte>(calibration.x());
+    const_cast<accel_t*>(_accel_calib)->cal_zero.y = static_cast<byte>(calibration.y());
+    const_cast<accel_t*>(_accel_calib)->cal_zero.z = static_cast<byte>(calibration.z());
+
+    gravityCalibrationChanged(calibration);
+  }
 }
 
 QVector3D Accelerometer::getOrientation() {
-  QVector3D orientation;
-  accelerometer.GetOrientation(orientation[0], orientation[1], orientation[2]);
-  return orientation;
+  return QVector3D(_orient->pitch, _orient->roll, _orient->yaw);
+  // TODO: There are raw variants, too
 }
 
 QVector3D Accelerometer::getGravity() {
-  QVector3D gravity;
-
-  accelerometer.GetGravityVector(gravity[0], gravity[1], gravity[2]);
-  return gravity;
+  return QVector3D(_gforce->x, _gforce->y, _gforce->z);
 }
 
 QVector3D Accelerometer::getGravityRaw() {
-  QVector3D gravityRaw;
-
-  accelerometer.GetRawGravityVector(gravityRaw[0], gravityRaw[1], gravityRaw[2]);
-  return gravityRaw;
+  return QVector3D(_accel->x, _accel->y, _accel->z);
 }
 }

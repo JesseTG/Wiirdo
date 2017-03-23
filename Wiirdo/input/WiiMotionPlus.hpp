@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector3D>
 
-#include <wiic/wiicpp.h>
+#include <wiiuse.h>
 
 namespace wii {
 
@@ -17,8 +17,10 @@ class WiiMotionPlus : public QObject
   Q_PROPERTY(QVector3D rawRates READ getRawRates NOTIFY rawRatesChanged)
 
 public:
-  explicit WiiMotionPlus(const CMotionPlus& mp, QObject *parent = 0);
-
+  explicit WiiMotionPlus(motion_plus_t* mp, QObject *parent = 0);
+  WiiMotionPlus() = delete;
+  WiiMotionPlus& operator=(const WiiMotionPlus&) = delete;
+  WiiMotionPlus(const WiiMotionPlus&) = delete;
   int getGyroscopeThreshold();
   void setGyroscopeThreshold(int);
   QVector3D getRates();
@@ -33,7 +35,7 @@ public slots:
   void calibrate();
 
 private:
-  CMotionPlus motionPlus;
+  motion_plus_t* _mp;
 
 };
 }

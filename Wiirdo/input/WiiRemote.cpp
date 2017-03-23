@@ -2,64 +2,106 @@
 
 namespace wii {
 
-WiiRemote::WiiRemote(const CWiimote& _wiimote, QObject *parent) :
+WiiRemote::WiiRemote(wiimote_t* _wiimote, QObject *parent) :
   QObject(parent),
   wiimote(_wiimote),
-  accelerometer(_wiimote.Accelerometer),
+  accelerometer(
+    &_wiimote->accel_calib,
+    &_wiimote->orient,
+    &_wiimote->gforce,
+    &_wiimote->orient_threshold,
+    &_wiimote->accel_threshold,
+    &_wiimote->accel),
   motionPlus(nullptr) {
 }
 
+WiiRemote::~WiiRemote() {
+
+}
+
+void WiiRemote::update() {
+  this->batteryChanged();
+
+  Accelerometer* accelerometer = this->getAccelerometer();
+
+  accelerometer->gravityChanged();
+  accelerometer->orientationChanged();
+  accelerometer->gravityRawChanged();
+  accelerometer->updateFilters();
+}
+
 bool WiiRemote::isAccelerometerEnabled() {
-  return wiimote.isUsingACC();
+  return WIIUSE_USING_ACC(wiimote);
 }
 
 void WiiRemote::setAccelerometerEnabled(bool isUsing) {
+  bool current = isAccelerometerEnabled();
 
-  wiimote.SetMotionSensingMode(isUsing ? CWiimote::ON : CWiimote::OFF);
+  if (isUsing != current) {
 
-  accelerometerEnabledChanged(isUsing);
+    wiiuse_motion_sensing(wiimote, isUsing);
+
+    accelerometerEnabledChanged(isUsing);
+  }
 }
 
 bool WiiRemote::isRumbleEnabled() {
-  return wiimote.isRumbleEnabled();
+  return false; // TODO: Fix
 }
 
 void WiiRemote::setRumbleEnabled(bool isUsing) {
-  wiimote.SetRumbleMode(isUsing ? CWiimote::ON : CWiimote::OFF);
+//  bool current = isRumbleEnabled();
 
-  rumbleEnabledChanged(isUsing);
+//  if (isUsing != current) {
+//    wiimote->to(isUsing ? CWiimote::ON : CWiimote::OFF);
+
+//    rumbleEnabledChanged(isUsing);
+//  }
+  // TODO
 }
 
 bool WiiRemote::isMotionPlusEnabled() {
-  return wiimote.isUsingMotionPlus();
+  return WIIUSE_USING_EXP(wiimote) && (wiimote->exp.type == EXP_MOTION_PLUS);
 }
 
 void WiiRemote::setMotionPlusEnabled(bool isUsing) {
-  wiimote.EnableMotionPlus(isUsing ? CWiimote::ON : CWiimote::OFF);
+  bool current = isMotionPlusEnabled();
 
-  motionPlusEnabledChanged(isUsing);
+  if (isUsing != current) {
+    wiiuse_set_motion_plus(wiimote, isUsing); // TODO: isUsing should really be an int, because of nunchuck passthrough
+
+    motionPlusEnabledChanged(isUsing);
+  }
 }
 
 bool WiiRemote::isSmoothingEnabled() {
-  return wiimote.GetFlags() & WIIC_SMOOTHING;
+  //return wiimote.GetFlags() & WIIC_SMOOTHING;
+  return false; // TODO
 }
 
 void WiiRemote::setSmoothingEnabled(bool isUsing) {
-  wiimote.SetSmoothing(isUsing);
+//  bool current = isSmoothingEnabled();
 
-  smoothingEnabledChanged(isUsing);
+//  if (isUsing != current) {
+//    wiimote.SetSmoothing(isUsing);
+
+//    smoothingEnabledChanged(isUsing);
+//  }
+ // TODO
 }
 
 int WiiRemote::getId() {
-  return wiimote.GetID();
+  //return wiimote.GetID();
+  return 0; // TODO
 }
 
 QString WiiRemote::getAddress() {
-  return QString(wiimote.GetAddress());
+//  return QString(wiimote.GetAddress());
+  return ""; // TODO
 }
 
 float WiiRemote::getBattery() {
   // TODO: Detect whether or not this has *really* changed
-  return wiimote.GetBatteryLevel();
+  return wiimote->battery_level;
 }
 }

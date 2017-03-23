@@ -34,18 +34,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 INCLUDEPATH += \
-    /usr/local/include/wiic \
     ../Wiirdo \
     ../WiiC/src \
 
 LIBS += \
     -L$$OUT_PWD/../Wiirdo \
     -L/usr/local/lib \
-    -L../WiiC/wiic \
-    -L../WiiC/wiicpp \
-    -lwiic \
-    -lwiicpp \
     -lWiirdo \
+    -lwiiuse \
 
 SUBDIRS += \
     Wiirdo-Example \

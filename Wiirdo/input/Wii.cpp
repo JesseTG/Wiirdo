@@ -5,22 +5,24 @@
 
 namespace wii {
 
-Wii::Wii(QObject *parent) : QObject(parent), _wiimoteProperty(nullptr, this->_wiimotes)
+Wii::Wii(QObject *parent) : QObject(parent), wiimotes(nullptr), _wiimoteProperty(nullptr, this->_qwiimotes)
 {
-  QObject::connect(&_futureWatcher, &decltype(_futureWatcher)::finished, [this]() {
-    auto wiimotes = _futureWatcher.result();
+  wiimotes = wiiuse_init(MAX_WIIMOTES);
 
-    if (wiimotes.empty()) {
+  QObject::connect(&_futureWatcher, &decltype(_futureWatcher)::finished, [this]() {
+    int connected = _futureWatcher.result();
+
+    if (connected == 0) {
       // If we couldn't find any Wii Remotes...
       this->connectionFailed();
     }
     else {
       QList<WiiRemote*> wm;
-      for (const CWiimote& w : wiimotes) {
-        wm.push_back(new WiiRemote(w, this));
+      for (int i = 0; i < connected; ++i) {
+        wm.push_back(new WiiRemote(wiimotes[i], this));
       }
 
-      this->_wiimotes = wm;
+      this->_qwiimotes = wm;
 
       this->wiimotesChanged();
       this->connectionSucceeded();
@@ -30,14 +32,27 @@ Wii::Wii(QObject *parent) : QObject(parent), _wiimoteProperty(nullptr, this->_wi
   });
 }
 
+Wii::~Wii() {
+
+  if (wiimotes != nullptr) {
+    wiiuse_cleanup(wiimotes, MAX_WIIMOTES);
+  }
+}
 
 void Wii::findAndConnect(int timeout, bool rumbleAck, bool autoreconnect) {
 
   if (_futureWatcher.isFinished()) {
     // If we're not already looking for Wiimotes...
 
-    QFuture<std::vector<CWiimote>> future = QtConcurrent::run([this, timeout, rumbleAck, autoreconnect]() {
-      return wii.FindAndConnect(timeout, rumbleAck, autoreconnect);
+    QFuture<int> future = QtConcurrent::run([this, timeout, rumbleAck, autoreconnect]() {
+      int found = wiiuse_find(wiimotes, MAX_WIIMOTES, timeout);
+
+      if (found == 0) {
+        return 0;
+      }
+      else {
+        return wiiuse_connect(wiimotes, MAX_WIIMOTES);
+      }
     });
 
     this->_futureWatcher.setFuture(future);
@@ -45,16 +60,10 @@ void Wii::findAndConnect(int timeout, bool rumbleAck, bool autoreconnect) {
 }
 
 void Wii::poll()  {
-  wii.Poll();
+  int events = wiiuse_poll(wiimotes, MAX_WIIMOTES);
 
-  for (WiiRemote* wiimote : this->_wiimotes) {
-    wiimote->batteryChanged();
-
-    Accelerometer* accelerometer = wiimote->getAccelerometer();
-
-    accelerometer->gravityChanged();
-    accelerometer->orientationChanged();
-    accelerometer->gravityRawChanged();
+  for (WiiRemote* wiimote : this->_qwiimotes) {
+    wiimote->update();
   }
 }
 
