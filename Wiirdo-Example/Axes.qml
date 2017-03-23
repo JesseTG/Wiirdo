@@ -13,7 +13,7 @@ Entity {
 
     Transform {
       id: xTransform
-      scale3D: Qt.vector3d(20, 1, 1)
+      scale3D: Qt.vector3d(40, 1, 1)
     }
     PhongMaterial {
       id: xMaterial
@@ -28,11 +28,11 @@ Entity {
 
     Transform {
       id: yTransform
-      scale3D: Qt.vector3d(1, 20, 1)
+      scale3D: Qt.vector3d(1, 40, 1)
     }
     PhongMaterial {
       id: yMaterial
-      diffuse: 'green'
+      diffuse: 'blue'
     }
 
     components: [yTransform, yMaterial, axisMesh]
@@ -43,11 +43,11 @@ Entity {
 
     Transform {
       id: zTransform
-      scale3D: Qt.vector3d(1, 1, 20)
+      scale3D: Qt.vector3d(1, 1, 40)
     }
     PhongMaterial {
       id: zMaterial
-      diffuse: 'blue'
+      diffuse: 'green'
     }
 
     components: [zTransform, zMaterial, axisMesh]
