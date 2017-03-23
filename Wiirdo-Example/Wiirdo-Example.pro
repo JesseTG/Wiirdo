@@ -34,11 +34,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 INCLUDEPATH += \
-    ../Wiirdo \
-    ../wiiuse/src \
+    $$top_srcdir/Wiirdo \
+    $$top_srcdir/wiiuse/src \
 
 LIBS += \
-    -L$$OUT_PWD/../Wiirdo \
+    -L$$top_builddir/Wiirdo \
     -L/usr/local/lib \
     -lWiirdo \
     -lwiiuse \

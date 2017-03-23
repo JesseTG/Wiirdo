@@ -11,3 +11,6 @@ SUBDIRS += \
     Wiirdo
 
 Wiirdo-Example.depends = Wiirdo
+
+message(top_srcdir: $$top_srcdir)
+message(top_builddir: $$top_builddir)

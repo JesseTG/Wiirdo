@@ -30,11 +30,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 INCLUDEPATH += \
-    ../wiiuse/src \
+    $$top_srcdir/wiiuse/src \
 
 LIBS += \
     -L/usr/local/lib \
-    -L../wiiuse \
+    -L$$top_builddir/wiiuse \
     -lwiiuse \
 
 SOURCES += \
