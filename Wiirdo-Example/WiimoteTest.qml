@@ -12,6 +12,8 @@ Entity {
 
     property Wii wii
     property alias pollTimer: pollTimer
+    property int accelerationThreshold
+    property real orientationThreshold
 
     Timer {
       id: pollTimer
@@ -21,11 +23,18 @@ Entity {
       onTriggered: {
         wii.poll();
 
-        var orientation = wii.wiimotes[0].accelerometer.orientation;
+        var wm = wii.wiimotes[0];
+        var accelerometer = wm.accelerometer;
 
-        wiimote.transform.rotationX = orientation.x - 90;
-        wiimote.transform.rotationY = orientation.y;
-        wiimote.transform.rotationZ = orientation.z;
+        var orientation = accelerometer.orientation;;
+
+        wiimote.transform.rotationX = orientation.x + 180;
+        wiimote.transform.rotationY = orientation.y + 180;
+        wiimote.transform.rotationZ = orientation.z + 180;
+
+        accelerometer.accelerationThreshold = accelerationThreshold;
+        accelerometer.orientationThreshold = orientationThreshold;
+
       }
     }
 
@@ -50,6 +59,8 @@ Entity {
                 camera: camera
                 clearColor: "transparent"
             }
+
+            pickingSettings.pickMethod: PickingSettings.BoundingVolumePicking
         },
         InputSettings {
         },
