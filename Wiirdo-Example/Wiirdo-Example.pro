@@ -37,6 +37,15 @@ INCLUDEPATH += \
     $$top_srcdir/Wiirdo \
     $$top_srcdir/wiiuse/src \
 
+CONFIG(release, debug|release) {
+  LIBS += \
+    -L$$top_builddir/Wiirdo/release
+}
+CONFIG(debug, debug|release) {
+  LIBS += \
+    -L$$top_builddir/Wiirdo/debug
+}
+
 LIBS += \
     -L$$top_builddir/Wiirdo \
     -L/usr/local/lib \
