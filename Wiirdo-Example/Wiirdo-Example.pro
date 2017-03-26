@@ -42,7 +42,3 @@ LIBS += \
     -L/usr/local/lib \
     -lWiirdo \
     -lwiiuse \
-
-SUBDIRS += \
-    Wiirdo-Example \
-    Wiirdo \
