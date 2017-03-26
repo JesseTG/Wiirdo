@@ -46,3 +46,9 @@ LIBS += \
 SUBDIRS += \
     Wiirdo-Example \
     Wiirdo \
+
+STATECHARTS +=
+
+DISTFILES += \
+    UIForm.ui.qml \
+    UI.qml
