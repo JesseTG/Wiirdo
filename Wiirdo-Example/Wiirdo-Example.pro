@@ -37,18 +37,23 @@ INCLUDEPATH += \
     $$top_srcdir/Wiirdo \
     $$top_srcdir/wiiuse/src \
 
+CONFIG(release, debug|release) {
+  LIBS += \
+    -L$$top_builddir/Wiirdo/release
+}
+CONFIG(debug, debug|release) {
+  LIBS += \
+    -L$$top_builddir/Wiirdo/debug
+}
+
 LIBS += \
     -L$$top_builddir/Wiirdo \
     -L/usr/local/lib \
     -lWiirdo \
     -lwiiuse \
 
-SUBDIRS += \
-    Wiirdo-Example \
-    Wiirdo \
-
-STATECHARTS +=
-
 DISTFILES += \
     UIForm.ui.qml \
     UI.qml
+=======
+>>>>>>> 73275b78b1b41bafa65d7456396019b7b3597bdf
