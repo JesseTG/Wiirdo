@@ -46,5 +46,10 @@ Vagrant::Config.run do |config|
       qt58* \
       upx-ucl \
       xvfb \
+
+    cd wiiuse
+    cmake .
+    make
+    sudo make install
   SHELL
 end
