@@ -52,10 +52,7 @@ LIBS += \
     -L$$top_srcdir/wiiuse/src \
     -L/usr/local/lib \
     -lWiirdo \
-    -lwiiuse \
 
 DISTFILES += \
     UIForm.ui.qml \
     UI.qml
-=======
->>>>>>> 73275b78b1b41bafa65d7456396019b7b3597bdf
