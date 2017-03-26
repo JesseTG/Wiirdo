@@ -50,4 +50,3 @@ LIBS += \
     -L$$top_builddir/Wiirdo \
     -L/usr/local/lib \
     -lWiirdo \
-    -lwiiuse \
