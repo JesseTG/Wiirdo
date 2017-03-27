@@ -1,25 +1,20 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant::Config.run do |config|
+Vagrant.configure("2") do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "boxcutter/ubuntu1604-desktop"
 
-  # Boot with a GUI so you can see the screen. (Default is headless)
-  config.vm.boot_mode = :gui
-
-  # Set RAM to 2 GB
-  config.vm.customize ["modifyvm", :id, "--memory", 2048]
-
-  # Provision with a shell script
   config.vm.provider "virtualbox" do |vb|
-    vb.gui = false
+    vb.gui = true
     vb.memory = 2048
     vb.linked_clone = true if Vagrant::VERSION =~ /^1.8/
+    vb.customize ["modifyvm", :id, "--accelerate3d", "on", "--accelerate2dvideo", "on"]
+
   end
 
   config.vm.provision "shell", inline: <<-SHELL
@@ -27,29 +22,46 @@ Vagrant::Config.run do |config|
     apt-get install -qy software-properties-common
     apt-mark hold grub*
     add-apt-repository -y ppa:beineri/opt-qt58-xenial
+    add-apt-repository -y ppa:ubuntu-toolchain-r/test
     apt-get update -q
     apt-get dist-upgrade -qy
     apt-get install -qy \
       bluetooth \
       bluez \
+      build-essential \
       cmake \
       cmake-extras \
       extra-cmake-modules \
-      g++ \
-      git \
       freeglut* \
-      libboost-all-dev \
+      g++ \
+      gcc-6 \
+      git \
       libbluetooth* \
-      libsdl* \
+      libboost-all-dev \
       libgl{,u}1-mesa-dev \
+      libsdl*1.2* \
+      linux-headers-$(uname -r) \
       mesa-common-dev \
-      qt58* \
+      qt583d \
+      qt58base \
+      qt58canvas3d \
+      qt58creator \
+      qt58declarative \
+      qt58imageformats \
+      qt58qbs \
+      qt58quickcontrols \
+      qt58quickcontrols2 \
+      qt58script \
+      qt58sensors \
+      qt58svg \
+      qt58tools \
       upx-ucl \
+      virtualbox-guest-dkms \
+      virtualbox-guest-utils \
       xvfb \
 
-    cd wiiuse
-    cmake .
-    make
-    sudo make install
+    cd /vagrant/wiiuse
+    cmake . -DCMAKE_BUILD_TYPE=Release
+    make install
   SHELL
 end
