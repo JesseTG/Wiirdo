@@ -10,108 +10,90 @@ Item {
 
     Frame {
         id: frame
-        x: 15
-        width: 370
-        height: 281
+        anchors.fill: parent
         opacity: 1
         visible: true
         clip: true
-        anchors.top: parent.top
-        anchors.topMargin: 60
         spacing: 2
         padding: 13
 
-        ColumnLayout {
-            id: columnLayout
-            x: -13
-            y: -13
-            width: 370
-            height: 288
-        }
+        GridLayout {
+            id: gridLayout
+            anchors.fill: parent
+            columnSpacing: 6
+            rowSpacing: 5
+            columns: 2
 
-        ComboBox {
-            id: comboBox
-            x: 176
-            y: 14
-            width: 168
-            height: 40
-            model: ["First", "Second", "Third"]
-        }
+            Text {
+                id: text1
+                width: 155
+                height: 40
+                text: qsTr("Gesture_1")
+                font.pixelSize: 12
+            }
 
-        ComboBox {
-            id: comboBox1
-            x: 176
-            y: 60
-            width: 168
-            height: 40
-            model: ["First", "Second", "Third"]
-        }
+            ComboBox {
+                id: comboBox
+                width: 168
+                height: 40
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                model: ["First", "Second", "Third"]
+            }
 
-        ComboBox {
-            id: comboBox2
-            x: 176
-            y: 108
-            width: 168
-            height: 40
-            model: ["First", "Second", "Third"]
-        }
+            Text {
+                id: text2
+                width: 155
+                height: 40
+                text: qsTr("Gesture_2")
+                font.pixelSize: 12
+            }
 
-        ComboBox {
-            id: comboBox3
-            x: 176
-            y: 154
-            width: 168
-            height: 40
-            model: ["First", "Second", "Third"]
-        }
+            ComboBox {
+                id: comboBox1
+                width: 168
+                height: 40
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                model: ["First", "Second", "Third"]
+            }
 
-        Text {
-            id: text1
-            x: 0
-            y: 14
-            width: 155
-            height: 40
-            text: qsTr("Gesture_1")
-            font.pixelSize: 12
-        }
+            Text {
+                id: text3
+                width: 155
+                height: 42
+                text: qsTr("Gesture_3")
+                font.pixelSize: 12
+            }
 
-        Text {
-            id: text2
-            x: 0
-            y: 60
-            width: 155
-            height: 40
-            text: qsTr("Gesture_2")
-            font.pixelSize: 12
-        }
+            ComboBox {
+                id: comboBox2
+                width: 168
+                height: 40
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                model: ["First", "Second", "Third"]
+            }
 
-        Text {
-            id: text3
-            x: 0
-            y: 106
-            width: 155
-            height: 42
-            text: qsTr("Gesture_3")
-            font.pixelSize: 12
-        }
+            Text {
+                id: text4
+                width: 155
+                height: 40
+                text: qsTr("Gesture_4")
+                font.pixelSize: 12
+            }
 
-        Text {
-            id: text4
-            x: 0
-            y: 154
-            width: 155
-            height: 40
-            text: qsTr("Gesture_4")
-            font.pixelSize: 12
-        }
+            ComboBox {
+                id: comboBox3
+                width: 168
+                height: 40
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                model: ["First", "Second", "Third"]
+            }
 
-        Button {
-            id: button
-            x: 0
-            y: 218
-            width: 344
-            height: 31
-            text: qsTr("Activate")
+            Button {
+                id: button
+                width: 344
+                height: 31
+                text: qsTr("Activate")
+            }
         }
     }
 }
