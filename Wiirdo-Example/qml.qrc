@@ -7,7 +7,5 @@
         <file>data/wiimote.obj</file>
         <file>Wiimote.qml</file>
         <file>Axes.qml</file>
-        <file>UI.qml</file>
-        <file>UIForm.ui.qml</file>
     </qresource>
 </RCC>

@@ -1,14 +1,11 @@
 TEMPLATE = app
 
-QT += qml quick 3dcore 3drender 3dinput 3dlogic 3dextras 3dquick 3dquickextras concurrent
+QT += qml quick concurrent quickcontrols2
 CONFIG += c++11
 
 SOURCES += main.cpp
 
 RESOURCES += qml.qrc
-
-OTHER_FILES += \
-  .gitignore \
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -31,7 +28,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
 
 INCLUDEPATH += \
     $$top_srcdir/Wiirdo \

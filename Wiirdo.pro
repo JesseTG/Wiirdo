@@ -8,9 +8,11 @@ OTHER_FILES += \
 
 SUBDIRS += \
     Wiirdo-Example \
-    Wiirdo
+    Wiirdo \
+    Wiirdo-Config \
 
 Wiirdo-Example.depends = Wiirdo
+Wiirdo-Config.depends = Wiirdo
 
 message(top_srcdir: $$top_srcdir)
 message(top_builddir: $$top_builddir)
