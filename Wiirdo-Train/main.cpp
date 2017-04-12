@@ -192,7 +192,10 @@ int main(int argc, char *argv[]) {
                       useSmoothing, smoothingFactor,
                       nullRejectionLikelihoodThreshold);
 
-  classifier.enableTrimTrainingData(trimTrainingData, trimThreshold, maximumTrimPercentage);
+  if (!classifier.enableTrimTrainingData(trimTrainingData, trimThreshold, maximumTrimPercentage)) {
+    qCritical() << "Failed to set trim parameters for training data";
+    return 2;
+  }
 
   if (!classifier.train(data) ){
     qCritical() << "Failed to train classifier with data loaded from" << input;
