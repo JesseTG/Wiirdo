@@ -195,13 +195,13 @@ int main(int argc, char *argv[]) {
   classifier.enableTrimTrainingData(trimTrainingData, trimThreshold, maximumTrimPercentage);
 
   if (!classifier.train(data) ){
-      qCritical() << "Failed to train classifier with data loaded from" << input;
-      return 2;
+    qCritical() << "Failed to train classifier with data loaded from" << input;
+    return 2;
   }
 
   if (!classifier.save(output.toStdString())){
-      qCritical() << "Failed to save classifier model to" << output;
-      return 2;
+    qCritical() << "Failed to save classifier model to" << output;
+    return 2;
   }
 
   return 0;
