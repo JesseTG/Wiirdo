@@ -8,7 +8,8 @@ OTHER_FILES += \
 
 SUBDIRS += \
     Wiirdo-Example \
-    Wiirdo
+    Wiirdo \
+    Keysender
 
 Wiirdo-Example.depends = Wiirdo
 
