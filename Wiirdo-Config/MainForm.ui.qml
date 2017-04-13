@@ -2,10 +2,22 @@ import QtQuick 2.4
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
+import wii 1.0
+
 Item {
+
+    Wii {
+      id: wii
+
+      Component.onCompleted: {
+        console.log("Ready to go");
+      }
+    }
+
     id: item1
     width: 400
     height: 400
+    property alias gridLayout: gridLayout
     property alias frame: frame
 
     Frame {
@@ -89,10 +101,14 @@ Item {
             }
 
             Button {
-                id: button
+                id: button1
                 width: 344
                 height: 31
                 text: qsTr("Activate")
+                onReleased: {
+                    wii.click();
+                    console.log("QML");
+                }
             }
         }
     }

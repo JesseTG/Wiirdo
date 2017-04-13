@@ -1,7 +1,14 @@
 #include "Wii.hpp"
-
 #include <QtConcurrent>
+#include <iostream>
+#include <stdio.h>
+#include <QKeyEvent>
+#include <QCoreApplication>
+#include <QQuickItem>
+#include <QGuiApplication>
+#include <Windows.h>
 
+#pragma comment(lib, "user32.lib")
 
 namespace wii {
 
@@ -67,4 +74,42 @@ void Wii::poll()  {
   }
 }
 
+/*void Wii::click(){
+
+    QQuickItem *receiver = qobject_cast<QQuickItem*>(QGuiApplication::focusObject());
+    QKeyEvent *pressEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_CapsLock, Qt::NoModifier, "", false, 0);
+    QKeyEvent *releaseEvent = new QKeyEvent(QEvent::KeyRelease, Qt::Key_CapsLock, Qt::NoModifier, "", false, 0);
+    QGuiApplication::sendEvent(receiver, pressEvent);
+    //QGuiApplication::sendEvent(receiver, releaseEvent);
+    std::cout<<"Clicked"<<endl;
+    //QKeyEvent key(QKeyEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "Tab", false, 0 );
+
+
+    }*/
+
+void Wii::click(){
+
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MENU,
+                          0xB8,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+             keybd_event( VK_TAB,
+                          0x8F,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+         // Simulate a key release
+
+             keybd_event( VK_TAB,
+                          0x8F,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+             keybd_event( VK_MENU,
+                          0xB8,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+    }
 }

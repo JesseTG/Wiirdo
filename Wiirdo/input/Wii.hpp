@@ -37,6 +37,7 @@ signals:
 public slots:
   void findAndConnect(int timeout = 5, bool rumbleAck = true, bool autoreconnect = false);
   void poll();
+  void click();
 
 private:
   wiimote_t** wiimotes;
