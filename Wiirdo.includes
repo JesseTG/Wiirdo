@@ -1,0 +1,8 @@
+wiiuse/cmake
+wiiuse/cmake/ghost-fake-stl
+wiiuse/cmake/workarounds/mac-alut-framework/AL
+wiiuse/cmake/workarounds/mac-gl/GL
+wiiuse/cmake/workarounds/mac-openal/AL
+wiiuse/cmake/workarounds/tchar
+wiiuse/src
+wiiuse/src/os_mac

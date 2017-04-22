@@ -83,14 +83,22 @@ void Wii::Win_Mail(){
     GetKeyboardState((LPBYTE)&keyState);
 
           // Simulate a key press
-             keybd_event( VK_RWIN,
-                          0x5C,
+             keybd_event( VK_LCONTROL,
+                          0xA2,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+             keybd_event( VK_ESCAPE,
+                          0x1B,
                           KEYEVENTF_EXTENDEDKEY | 0,
                           0 );
 
          // Simulate a key release
-             keybd_event( VK_RWIN,
-                          0x5C,
+             keybd_event( VK_LCONTROL,
+                          0xA2,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+             keybd_event( VK_ESCAPE,
+                          0x1B,
                           KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
                           0);
 }
