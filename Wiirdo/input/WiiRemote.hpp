@@ -31,6 +31,24 @@ public:
   virtual ~WiiRemote();
   void update();
 
+  enum Button {
+    Two = WIIMOTE_BUTTON_TWO,
+    One = WIIMOTE_BUTTON_ONE,
+    B = WIIMOTE_BUTTON_B,
+    A = WIIMOTE_BUTTON_A,
+    Minus = WIIMOTE_BUTTON_MINUS,
+    Home = WIIMOTE_BUTTON_HOME,
+    Left = WIIMOTE_BUTTON_LEFT,
+    Right = WIIMOTE_BUTTON_RIGHT,
+    Down = WIIMOTE_BUTTON_DOWN,
+    Up = WIIMOTE_BUTTON_UP,
+    Plus = WIIMOTE_BUTTON_PLUS,
+    Unknown = WIIMOTE_BUTTON_UNKNOWN,
+    All = WIIMOTE_BUTTON_ALL,
+  };
+  Q_ENUM(Button)
+
+
 signals:
   void accelerometerChanged();
   void motionPlusChanged();
