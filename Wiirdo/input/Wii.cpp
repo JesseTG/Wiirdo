@@ -74,42 +74,94 @@ void Wii::poll()  {
   }
 }
 
-/*void Wii::click(){
-
-    QQuickItem *receiver = qobject_cast<QQuickItem*>(QGuiApplication::focusObject());
-    QKeyEvent *pressEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_CapsLock, Qt::NoModifier, "", false, 0);
-    QKeyEvent *releaseEvent = new QKeyEvent(QEvent::KeyRelease, Qt::Key_CapsLock, Qt::NoModifier, "", false, 0);
-    QGuiApplication::sendEvent(receiver, pressEvent);
-    //QGuiApplication::sendEvent(receiver, releaseEvent);
-    std::cout<<"Clicked"<<endl;
-    //QKeyEvent key(QKeyEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "Tab", false, 0 );
-
-
-    }*/
-
 void Wii::click(){
+    Win_Mail();
+    }
 
+void Wii::Win_Mail(){
     BYTE keyState[256];
     GetKeyboardState((LPBYTE)&keyState);
 
           // Simulate a key press
-             keybd_event( VK_MENU,
-                          0xB8,
+             keybd_event( VK_RWIN,
+                          0x5C,
                           KEYEVENTF_EXTENDEDKEY | 0,
                           0 );
-             keybd_event( VK_TAB,
-                          0x8F,
-                          KEYEVENTF_EXTENDEDKEY | 0,
-                          0 );
-         // Simulate a key release
 
-             keybd_event( VK_TAB,
-                          0x8F,
+         // Simulate a key release
+             keybd_event( VK_RWIN,
+                          0x5C,
                           KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
                           0);
-             keybd_event( VK_MENU,
-                          0xB8,
+}
+
+
+void Wii::Music_Play(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MEDIA_PLAY_PAUSE,
+                          0xB3,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MEDIA_PLAY_PAUSE,
+                          0xB3,
                           KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
                           0);
-    }
+}
+
+void Wii::Music_Pause(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MEDIA_PLAY_PAUSE,
+                          0xB3,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MEDIA_PLAY_PAUSE,
+                          0xB3,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
+void Wii::Music_Next(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MEDIA_NEXT_TRACK,
+                          0xB0,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MEDIA_NEXT_TRACK,
+                          0xB0,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
+void Wii::Music_Previous(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MEDIA_PREV_TRACK,
+                          0xB1,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MEDIA_PREV_TRACK,
+                          0xB1,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
 }
