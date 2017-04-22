@@ -97,6 +97,7 @@ int main(int argc, char *argv[])
     const QList<WiiRemote*>& wiimotes = wii->getWiimotesCpp();
     WiiRemote* wiimote = wiimotes[0];
     Accelerometer* accelerometer = wiimote->getAccelerometer();
+    wiimote->setAccelerometerEnabled(true);
 
     QObject::connect(timer.data(), &QTimer::timeout, [wii, recording, sample, accelerometer]() {
       wii->poll();
