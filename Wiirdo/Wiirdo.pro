@@ -49,3 +49,5 @@ HEADERS += \
     input/Accelerometer.hpp \
     input/WiiMotionPlus.hpp
 
+DISTFILES +=
+

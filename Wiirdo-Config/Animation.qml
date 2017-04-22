@@ -20,15 +20,15 @@ Item {
         }
     }
 
-    id: item1
+    id: item2
     width: 600
     height: 400
     property alias gridLayout: gridLayout
-    property alias frame: frame
+    property alias frame: frame2
 
     Frame {
-        id: frame
-        anchors.fill: parent
+        id: frame2
+        anchors.centerIn: parent
         opacity: 1
         visible: true
         clip: true
@@ -115,10 +115,9 @@ Item {
                 height: 31
                 text: qsTr("Activate")
                 onClicked:  {
-                wii.click(comboBox.currentIndex, comboBox1.currentIndex, comboBox2.currentIndex, comboBox3.currentIndex, 2);
+                wii.click();
                 }
             }
-
         }
     }
 }
