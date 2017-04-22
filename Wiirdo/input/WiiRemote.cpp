@@ -19,6 +19,20 @@ WiiRemote::~WiiRemote() {
 
 }
 
+#define CHECK_WIIMOTE_BUTTONS(lowername, uppername) \
+  do { \
+    if (IS_JUST_PRESSED(wiimote, Button::uppername)) { \
+      emit lowername##HeldChanged(); \
+      emit buttonPressed(Button::uppername); \
+      emit lowername##Pressed(); \
+    } \
+    else if (IS_RELEASED(wiimote, Button::uppername)) { \
+      emit lowername##HeldChanged(); \
+      emit buttonReleased(Button::uppername); \
+      emit lowername##Released(); \
+    } \
+  } while (false) \
+
 void WiiRemote::update() {
   emit batteryChanged();
 
@@ -28,6 +42,18 @@ void WiiRemote::update() {
   emit accelerometer->orientationChanged();
   emit accelerometer->gravityRawChanged();
   accelerometer->updateFilters();
+
+  CHECK_WIIMOTE_BUTTONS(two, Two);
+  CHECK_WIIMOTE_BUTTONS(one, One);
+  CHECK_WIIMOTE_BUTTONS(b, B);
+  CHECK_WIIMOTE_BUTTONS(a, A);
+  CHECK_WIIMOTE_BUTTONS(minus, Minus);
+  CHECK_WIIMOTE_BUTTONS(home, Home);
+  CHECK_WIIMOTE_BUTTONS(left, Left);
+  CHECK_WIIMOTE_BUTTONS(right, Right);
+  CHECK_WIIMOTE_BUTTONS(up, Up);
+  CHECK_WIIMOTE_BUTTONS(down, Down);
+  CHECK_WIIMOTE_BUTTONS(plus, Plus);
 }
 
 bool WiiRemote::isAccelerometerEnabled() const {
@@ -103,4 +129,53 @@ float WiiRemote::getBattery() const {
   // TODO: Detect whether or not this has *really* changed
   return wiimote->battery_level;
 }
+
+bool WiiRemote::isButtonHeld(Button button) const {
+  return IS_HELD(wiimote, button);
+}
+
+bool WiiRemote::isTwoHeld() const {
+  return isButtonHeld(Button::Two);
+}
+
+bool WiiRemote::isOneHeld() const {
+  return isButtonHeld(Button::One);
+}
+
+bool WiiRemote::isBHeld() const {
+  return isButtonHeld(Button::B);
+}
+
+bool WiiRemote::isAHeld() const {
+  return isButtonHeld(Button::A);
+}
+
+bool WiiRemote::isMinusHeld() const {
+  return isButtonHeld(Button::Minus);
+}
+
+bool WiiRemote::isHomeHeld() const {
+  return isButtonHeld(Button::Home);
+}
+
+bool WiiRemote::isLeftHeld() const {
+  return isButtonHeld(Button::Left);
+}
+
+bool WiiRemote::isRightHeld() const {
+  return isButtonHeld(Button::Right);
+}
+
+bool WiiRemote::isUpHeld() const {
+  return isButtonHeld(Button::Up);
+}
+
+bool WiiRemote::isDownHeld() const {
+  return isButtonHeld(Button::Down);
+}
+
+bool WiiRemote::isPlusHeld() const {
+  return isButtonHeld(Button::Plus);
+}
+
 }

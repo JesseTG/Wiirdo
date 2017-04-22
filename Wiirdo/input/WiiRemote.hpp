@@ -23,6 +23,18 @@ class WiiRemote : public QObject
   Q_PROPERTY(QString address READ getAddress CONSTANT)
   Q_PROPERTY(float battery READ getBattery NOTIFY batteryChanged)
 
+  Q_PROPERTY(bool twoHeld READ isTwoHeld NOTIFY twoHeldChanged)
+  Q_PROPERTY(bool oneHeld READ isOneHeld NOTIFY oneHeldChanged)
+  Q_PROPERTY(bool bHeld READ isBHeld NOTIFY bHeldChanged)
+  Q_PROPERTY(bool aHeld READ isAHeld NOTIFY aHeldChanged)
+  Q_PROPERTY(bool minusHeld READ isMinusHeld NOTIFY minusHeldChanged)
+  Q_PROPERTY(bool homeHeld READ isHomeHeld NOTIFY homeHeldChanged)
+  Q_PROPERTY(bool leftHeld READ isLeftHeld NOTIFY leftHeldChanged)
+  Q_PROPERTY(bool rightHeld READ isRightHeld NOTIFY rightHeldChanged)
+  Q_PROPERTY(bool upHeld READ isUpHeld NOTIFY upHeldChanged)
+  Q_PROPERTY(bool downHeld READ isDownHeld NOTIFY downHeldChanged)
+  Q_PROPERTY(bool plusHeld READ isPlusHeld NOTIFY plusHeldChanged)
+
 public:
   explicit WiiRemote(wiimote_t* w, QObject *parent = 0);
   WiiRemote(const WiiRemote& other) = delete;
@@ -58,6 +70,52 @@ signals:
   void smoothingEnabledChanged(bool);
   void batteryChanged();
 
+  void buttonPressed(Button);
+  void buttonReleased(Button);
+
+  void twoPressed();
+  void twoReleased();
+  void twoHeldChanged();
+
+  void onePressed();
+  void oneReleased();
+  void oneHeldChanged();
+
+  void bPressed();
+  void bReleased();
+  void bHeldChanged();
+
+  void aPressed();
+  void aReleased();
+  void aHeldChanged();
+
+  void minusPressed();
+  void minusReleased();
+  void minusHeldChanged();
+
+  void homePressed();
+  void homeReleased();
+  void homeHeldChanged();
+
+  void leftPressed();
+  void leftReleased();
+  void leftHeldChanged();
+
+  void rightPressed();
+  void rightReleased();
+  void rightHeldChanged();
+
+  void upPressed();
+  void upReleased();
+  void upHeldChanged();
+
+  void downPressed();
+  void downReleased();
+  void downHeldChanged();
+
+  void plusPressed();
+  void plusReleased();
+  void plusHeldChanged();
 public slots:
 
 public:
@@ -79,6 +137,18 @@ public:
   bool isSmoothingEnabled() const;
   void setSmoothingEnabled(bool);
 
+  bool isButtonHeld(Button) const;
+  bool isTwoHeld() const;
+  bool isOneHeld() const;
+  bool isBHeld() const;
+  bool isAHeld() const;
+  bool isMinusHeld() const;
+  bool isHomeHeld() const;
+  bool isLeftHeld() const;
+  bool isRightHeld() const;
+  bool isUpHeld() const;
+  bool isDownHeld() const;
+  bool isPlusHeld() const;
 
   int getId() const;
   QString getAddress() const;
