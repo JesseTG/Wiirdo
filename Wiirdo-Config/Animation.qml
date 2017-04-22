@@ -118,18 +118,6 @@ Item {
                 wii.click();
                 }
             }
-
-            Button {
-                id: displayAnimation
-                width: 344
-                height: 31
-                text: qsTr("Disply animation")
-                onClicked: {
-                    var component = Qt.createComponent("Animation.qml");
-                    win = component.createObject(root);
-                    win.show();
-                }
-            }
         }
     }
 }
