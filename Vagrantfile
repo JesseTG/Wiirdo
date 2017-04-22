@@ -61,6 +61,7 @@ Vagrant.configure("2") do |config|
       xvfb \
 
     cd /vagrant/wiiuse
+    git clean -xdf
     cmake . -DCMAKE_BUILD_TYPE=Release
     make install
 
