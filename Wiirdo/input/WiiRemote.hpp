@@ -62,23 +62,27 @@ public slots:
 
 public:
   Accelerometer* getAccelerometer() { return &accelerometer; }
-  WiiMotionPlus* getMotionPlus() { return motionPlus; }
+  const Accelerometer* getAccelerometer() const { return &accelerometer; }
 
-  bool isAccelerometerEnabled();
+  WiiMotionPlus* getMotionPlus() { return motionPlus; }
+  const WiiMotionPlus* getMotionPlus() const { return motionPlus; }
+
+  bool isAccelerometerEnabled() const;
   void setAccelerometerEnabled(bool);
 
-  bool isRumbleEnabled();
+  bool isRumbleEnabled() const;
   void setRumbleEnabled(bool);
 
-  bool isMotionPlusEnabled();
+  bool isMotionPlusEnabled() const;
   void setMotionPlusEnabled(bool);
 
-  bool isSmoothingEnabled();
+  bool isSmoothingEnabled() const;
   void setSmoothingEnabled(bool);
 
-  int getId();
-  QString getAddress();
-  float getBattery();
+
+  int getId() const;
+  QString getAddress() const;
+  float getBattery() const;
 private:
   wiimote_t* wiimote;
   Accelerometer accelerometer;

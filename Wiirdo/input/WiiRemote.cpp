@@ -30,7 +30,7 @@ void WiiRemote::update() {
   accelerometer->updateFilters();
 }
 
-bool WiiRemote::isAccelerometerEnabled() {
+bool WiiRemote::isAccelerometerEnabled() const {
   return WIIUSE_USING_ACC(wiimote);
 }
 
@@ -45,7 +45,7 @@ void WiiRemote::setAccelerometerEnabled(bool isUsing) {
   }
 }
 
-bool WiiRemote::isRumbleEnabled() {
+bool WiiRemote::isRumbleEnabled() const {
   return false; // TODO: Fix
 }
 
@@ -60,7 +60,7 @@ void WiiRemote::setRumbleEnabled(bool isUsing) {
   // TODO
 }
 
-bool WiiRemote::isMotionPlusEnabled() {
+bool WiiRemote::isMotionPlusEnabled() const {
   return WIIUSE_USING_EXP(wiimote) && (wiimote->exp.type == EXP_MOTION_PLUS);
 }
 
@@ -74,7 +74,7 @@ void WiiRemote::setMotionPlusEnabled(bool isUsing) {
   }
 }
 
-bool WiiRemote::isSmoothingEnabled() {
+bool WiiRemote::isSmoothingEnabled() const {
   //return wiimote.GetFlags() & WIIC_SMOOTHING;
   return false; // TODO
 }
@@ -90,17 +90,16 @@ void WiiRemote::setSmoothingEnabled(bool isUsing) {
  // TODO
 }
 
-int WiiRemote::getId() {
-  //return wiimote.GetID();
-  return 0; // TODO
+int WiiRemote::getId() const {
+  return WIIMOTE_ID(this->wiimote);
 }
 
-QString WiiRemote::getAddress() {
+QString WiiRemote::getAddress() const {
 //  return QString(wiimote.GetAddress());
   return ""; // TODO
 }
 
-float WiiRemote::getBattery() {
+float WiiRemote::getBattery() const {
   // TODO: Detect whether or not this has *really* changed
   return wiimote->battery_level;
 }
