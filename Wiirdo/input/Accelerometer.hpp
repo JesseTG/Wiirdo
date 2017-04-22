@@ -27,6 +27,19 @@ public:
   Accelerometer() = delete;
 
   void updateFilters();
+  float getOrientationThreshold() const;
+  void setOrientationThreshold(float threshold);
+
+  int getAccelerationThreshold() const;
+  void setAccelerationThreshold(int threshold);
+
+  QVector3D getGravityCalibration() const;
+  void setGravityCalibration(const QVector3D& calibration);
+
+  QVector3D getOrientation() const;
+  QVector3D getGravity() const;
+  QVector3D getGravityRaw() const;
+
 signals:
   void orientationThresholdChanged(float threshold);
   void accelerationThresholdChanged(int threshold);
@@ -43,19 +56,6 @@ private:
   const float* _orientThreshold;
   const int* _accelThreshold;
   const vec3b_t* _accel;
-
-  float getOrientationThreshold();
-  void setOrientationThreshold(float threshold);
-
-  int getAccelerationThreshold();
-  void setAccelerationThreshold(int threshold);
-
-  QVector3D getGravityCalibration();
-  void setGravityCalibration(const QVector3D& calibration);
-
-  QVector3D getOrientation();
-  QVector3D getGravity();
-  QVector3D getGravityRaw();
 };
 
 }

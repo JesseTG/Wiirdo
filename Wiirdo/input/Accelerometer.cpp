@@ -23,7 +23,7 @@ Accelerometer::Accelerometer(
 void Accelerometer::updateFilters() {
 }
 
-float Accelerometer::getOrientationThreshold() {
+float Accelerometer::getOrientationThreshold() const {
   return *_orientThreshold;
 }
 
@@ -37,7 +37,7 @@ void Accelerometer::setOrientationThreshold(float threshold) {
   }
 }
 
-int Accelerometer::getAccelerationThreshold() {
+int Accelerometer::getAccelerationThreshold() const {
   return *_accelThreshold;
 }
 
@@ -51,7 +51,7 @@ void Accelerometer::setAccelerationThreshold(int threshold) {
   }
 }
 
-QVector3D Accelerometer::getGravityCalibration() {
+QVector3D Accelerometer::getGravityCalibration() const {
   return QVector3D(_accel_calib->cal_zero.x, _accel_calib->cal_zero.y, _accel_calib->cal_zero.z);
 }
 
@@ -67,16 +67,16 @@ void Accelerometer::setGravityCalibration(const QVector3D& calibration) {
   }
 }
 
-QVector3D Accelerometer::getOrientation() {
+QVector3D Accelerometer::getOrientation() const {
   return QVector3D(_orient->pitch, _orient->roll, _orient->yaw);
   // TODO: There are raw variants, too
 }
 
-QVector3D Accelerometer::getGravity() {
+QVector3D Accelerometer::getGravity() const {
   return QVector3D(_gforce->x, _gforce->y, _gforce->z);
 }
 
-QVector3D Accelerometer::getGravityRaw() {
+QVector3D Accelerometer::getGravityRaw() const {
   return QVector3D(_accel->x, _accel->y, _accel->z);
 }
 }
