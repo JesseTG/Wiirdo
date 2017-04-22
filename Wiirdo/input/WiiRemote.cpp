@@ -19,18 +19,44 @@ WiiRemote::~WiiRemote() {
 
 }
 
+#define CHECK_WIIMOTE_BUTTONS(lowername, uppername) \
+  do { \
+    if (IS_JUST_PRESSED(wiimote, Button::uppername)) { \
+      emit lowername##HeldChanged(); \
+      emit buttonPressed(Button::uppername); \
+      emit lowername##Pressed(); \
+    } \
+    else if (IS_RELEASED(wiimote, Button::uppername)) { \
+      emit lowername##HeldChanged(); \
+      emit buttonReleased(Button::uppername); \
+      emit lowername##Released(); \
+    } \
+  } while (false) \
+
 void WiiRemote::update() {
-  this->batteryChanged();
+  emit batteryChanged();
 
   Accelerometer* accelerometer = this->getAccelerometer();
 
-  accelerometer->gravityChanged();
-  accelerometer->orientationChanged();
-  accelerometer->gravityRawChanged();
+  emit accelerometer->gravityChanged();
+  emit accelerometer->orientationChanged();
+  emit accelerometer->gravityRawChanged();
   accelerometer->updateFilters();
+
+  CHECK_WIIMOTE_BUTTONS(two, Two);
+  CHECK_WIIMOTE_BUTTONS(one, One);
+  CHECK_WIIMOTE_BUTTONS(b, B);
+  CHECK_WIIMOTE_BUTTONS(a, A);
+  CHECK_WIIMOTE_BUTTONS(minus, Minus);
+  CHECK_WIIMOTE_BUTTONS(home, Home);
+  CHECK_WIIMOTE_BUTTONS(left, Left);
+  CHECK_WIIMOTE_BUTTONS(right, Right);
+  CHECK_WIIMOTE_BUTTONS(up, Up);
+  CHECK_WIIMOTE_BUTTONS(down, Down);
+  CHECK_WIIMOTE_BUTTONS(plus, Plus);
 }
 
-bool WiiRemote::isAccelerometerEnabled() {
+bool WiiRemote::isAccelerometerEnabled() const {
   return WIIUSE_USING_ACC(wiimote);
 }
 
@@ -41,11 +67,11 @@ void WiiRemote::setAccelerometerEnabled(bool isUsing) {
 
     wiiuse_motion_sensing(wiimote, isUsing);
 
-    accelerometerEnabledChanged(isUsing);
+    emit accelerometerEnabledChanged(isUsing);
   }
 }
 
-bool WiiRemote::isRumbleEnabled() {
+bool WiiRemote::isRumbleEnabled() const {
   return false; // TODO: Fix
 }
 
@@ -60,7 +86,7 @@ void WiiRemote::setRumbleEnabled(bool isUsing) {
   // TODO
 }
 
-bool WiiRemote::isMotionPlusEnabled() {
+bool WiiRemote::isMotionPlusEnabled() const {
   return WIIUSE_USING_EXP(wiimote) && (wiimote->exp.type == EXP_MOTION_PLUS);
 }
 
@@ -70,11 +96,11 @@ void WiiRemote::setMotionPlusEnabled(bool isUsing) {
   if (isUsing != current) {
     wiiuse_set_motion_plus(wiimote, isUsing); // TODO: isUsing should really be an int, because of nunchuck passthrough
 
-    motionPlusEnabledChanged(isUsing);
+    emit motionPlusEnabledChanged(isUsing);
   }
 }
 
-bool WiiRemote::isSmoothingEnabled() {
+bool WiiRemote::isSmoothingEnabled() const {
   //return wiimote.GetFlags() & WIIC_SMOOTHING;
   return false; // TODO
 }
@@ -90,18 +116,66 @@ void WiiRemote::setSmoothingEnabled(bool isUsing) {
  // TODO
 }
 
-int WiiRemote::getId() {
-  //return wiimote.GetID();
-  return 0; // TODO
+int WiiRemote::getId() const {
+  return WIIMOTE_ID(this->wiimote);
 }
 
-QString WiiRemote::getAddress() {
+QString WiiRemote::getAddress() const {
 //  return QString(wiimote.GetAddress());
   return ""; // TODO
 }
 
-float WiiRemote::getBattery() {
+float WiiRemote::getBattery() const {
   // TODO: Detect whether or not this has *really* changed
   return wiimote->battery_level;
 }
+
+bool WiiRemote::isButtonHeld(Button button) const {
+  return IS_HELD(wiimote, button);
+}
+
+bool WiiRemote::isTwoHeld() const {
+  return isButtonHeld(Button::Two);
+}
+
+bool WiiRemote::isOneHeld() const {
+  return isButtonHeld(Button::One);
+}
+
+bool WiiRemote::isBHeld() const {
+  return isButtonHeld(Button::B);
+}
+
+bool WiiRemote::isAHeld() const {
+  return isButtonHeld(Button::A);
+}
+
+bool WiiRemote::isMinusHeld() const {
+  return isButtonHeld(Button::Minus);
+}
+
+bool WiiRemote::isHomeHeld() const {
+  return isButtonHeld(Button::Home);
+}
+
+bool WiiRemote::isLeftHeld() const {
+  return isButtonHeld(Button::Left);
+}
+
+bool WiiRemote::isRightHeld() const {
+  return isButtonHeld(Button::Right);
+}
+
+bool WiiRemote::isUpHeld() const {
+  return isButtonHeld(Button::Up);
+}
+
+bool WiiRemote::isDownHeld() const {
+  return isButtonHeld(Button::Down);
+}
+
+bool WiiRemote::isPlusHeld() const {
+  return isButtonHeld(Button::Plus);
+}
+
 }

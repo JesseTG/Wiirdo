@@ -3,6 +3,11 @@
 
 .vagrant
 build
+build-[dD]ebug
+build-[rR]elease
+*.model
+/*.csv
+*.log_features
 
 *~
 *.autosave
