@@ -27,6 +27,7 @@ public:
   Wii& operator=(const Wii& other) = delete;
   virtual ~Wii();
   const QQmlListProperty<wii::WiiRemote>& getWiimotes() const { return _wiimoteProperty; }
+  const QList<WiiRemote*>& getWiimotesCpp() const { return _qwiimotes; }
 
 signals:
   void wiimotesChanged();
