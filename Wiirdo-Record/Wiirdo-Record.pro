@@ -48,3 +48,4 @@ LIBS += \
     -L/usr/local/lib \
     -lWiirdo \
     -lwiiuse \
+    -lgrt \
