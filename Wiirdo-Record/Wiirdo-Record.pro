@@ -31,6 +31,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 INCLUDEPATH += \
     $$top_srcdir/Wiirdo \
     $$top_srcdir/wiiuse/src \
+    $$top_srcdir/grt \
 
 CONFIG(release, debug|release) {
   LIBS += \
