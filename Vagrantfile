@@ -65,6 +65,11 @@ Vagrant.configure("2") do |config|
     cmake . -DCMAKE_BUILD_TYPE=Release
     make install
 
+    cd /vagrant/grt/build
+    git clean -xdf
+    cmake . -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=False
+    make install
+
     echo "/opt/qt58/bin/qt58-env.sh" >> /etc/profile
   SHELL
 end
