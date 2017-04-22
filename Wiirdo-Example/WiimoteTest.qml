@@ -18,7 +18,7 @@ Entity {
     Timer {
       id: pollTimer
       repeat: true
-      interval: 16
+      interval: 8
       triggeredOnStart: true
       onTriggered: {
         wii.poll();
