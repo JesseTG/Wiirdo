@@ -38,7 +38,10 @@ public slots:
   void findAndConnect(int timeout = 5, bool rumbleAck = true, bool autoreconnect = false);
   void poll();
   void click();
-  void Win_Mail();
+  void Win_Menu();
+  void Win_TaskManager();
+  void Win_Apps();
+  void Win_Mute();
   void Music_Play();
   void Music_Pause();
   void Music_Next();

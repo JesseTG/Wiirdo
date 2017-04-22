@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>MainForm.ui.qml</file>
+        <file>WindowsMenu.qml</file>
+        <file>WindowsMenuForm.ui.qml</file>
+        <file>MediaPlayer.qml</file>
+        <file>MediaPlayerForm.ui.qml</file>
     </qresource>
 </RCC>
