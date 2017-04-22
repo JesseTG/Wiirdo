@@ -2,14 +2,19 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QtDebug>
+#include <QFile>
 
 #include <GRT/ClassificationModules/DTW/DTW.h>
 #include <GRT/DataStructures/TimeSeriesClassificationData.h>
+
+constexpr unsigned int NUM_DIMENSIONS = 9;
 
 int main(int argc, char *argv[]) {
   QCoreApplication app(argc, argv);
   app.setApplicationName("Wiirdo-Train");
   app.setApplicationVersion("0.1");
+
+  /// Set up command-line options //////////////////////////////////////////////////////////////////////////////////////
   QCommandLineParser parser;
   parser.addHelpOption();
   parser.addVersionOption();
@@ -93,28 +98,43 @@ int main(int argc, char *argv[]) {
   });
   // clang-format on
 
-  parser.addPositionalArgument("input", "File to load",
-                               "<paths>");
+  parser.addPositionalArgument(
+    "inputs",
+    "Files to load",
+    "<path>..."
+  );
 
   parser.addPositionalArgument(
       "output",
       "File to save the output to (will not overwrite existing files). ",
-      "<path>");
+      "<path>"
+  );
 
   parser.process(app);
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  bool ok = true;
+  /// Parse the simple boolean options /////////////////////////////////////////////////////////////////////////////////
   bool useScaling = parser.isSet("scaling");
   bool useNullRejection = parser.isSet("null-rejection");
+  bool dtwConstrain = !parser.isSet("no-dtw-constrain");
+  bool offsetUsingFirstSample = parser.isSet("offset-using-first-sample");
+  bool useSmoothing = parser.isSet("smoothing");
+  bool trimTrainingData = parser.isSet("trim");
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /// Null Rejection Coefficient ///////////////////////////////////////////////////////////////////////////////////////
+  bool ok = true;
   double nullRejectionCoeff = parser.value("null-rejection-coefficient").toDouble(&ok);
 
   if (!ok) {
     qCritical() << parser.value("null-rejection-coefficient") << "cannot be parsed as a number";
     parser.showHelp(1);
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  /// Rejection Mode ///////////////////////////////////////////////////////////////////////////////////////////////////
   QString rejectionModeString = parser.value("rejection-mode").toUpper();
-  int rejectionMode = GRT::DTW::TEMPLATE_THRESHOLDS;
+  GRT::UINT rejectionMode = GRT::DTW::TEMPLATE_THRESHOLDS;
   if (rejectionModeString == "TEMPLATE_THRESHOLDS") {
     rejectionMode = GRT::DTW::TEMPLATE_THRESHOLDS;
   }
@@ -127,28 +147,27 @@ int main(int argc, char *argv[]) {
   else {
     parser.showHelp(1);
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  bool dtwConstrain = !parser.isSet("no-dtw-constrain");
+  /// Radius ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   double radius = parser.value("radius").toDouble(&ok);
 
-  if (!ok) {
-    qCritical() << parser.value("radius") << "cannot be parsed as a number";
+  if (!ok || radius < 0 || radius > 1) {
+    qCritical() << "Radius must be between 0 and 1, but received" << parser.value("radius");
     parser.showHelp(1);
   }
-  else if (radius < 0 || radius > 1) {
-    qCritical() << "Radius must be between 0 and 1";
-    parser.showHelp(1);
-  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  bool offsetUsingFirstSample = parser.isSet("offset-using-first-sample");
-  bool useSmoothing = parser.isSet("smoothing");
+  /// Smoothing Factor /////////////////////////////////////////////////////////////////////////////////////////////////
   unsigned int smoothingFactor = parser.value("smoothing-factor").toUInt(&ok, 10);
 
   if (!ok) {
     qCritical() << parser.value("smoothing-factor") << "cannot be parsed as an unsigned integer";
     parser.showHelp(1);
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  /// Null Rejection Likelihood Threshold //////////////////////////////////////////////////////////////////////////////
   double nullRejectionLikelihoodThreshold =
       parser.value("null-rejection-likelihood").toDouble(&ok);
 
@@ -156,18 +175,9 @@ int main(int argc, char *argv[]) {
     qCritical() << parser.value("null-rejection-likelihood") << "cannot be parsed as a number";
     parser.showHelp(1);
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  QStringList paths = parser.positionalArguments();
-
-  if (paths.length() < 2) {
-    qCritical() << "Must provide an input and an output";
-    parser.showHelp(1);
-  }
-
-  const QString& input = paths[0];
-  const QString& output = paths[1];
-
-  bool trimTrainingData = parser.isSet("trim");
+  /// Trim Values //////////////////////////////////////////////////////////////////////////////////////////////////////
   double trimThreshold = parser.value("trim-threshold").toDouble(&ok);
   if (!ok || trimThreshold < 0 || trimThreshold > 1) {
     qCritical() << parser.value("trim-threshold") << "is not a value between 0 and 1";
@@ -179,30 +189,79 @@ int main(int argc, char *argv[]) {
     qCritical() << parser.value("max-trim-percent") << "is not a value between 0 and 100";
     parser.showHelp(1);
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  GRT::TimeSeriesClassificationData data(3, "test", "description");
+  /// Load the actual data /////////////////////////////////////////////////////////////////////////////////////////////
+  QStringList paths = parser.positionalArguments();
 
-  if (!data.load(input.toStdString())) {
-    qCritical() << "Failed to load" << input;
+  if (paths.length() < 2) {
+    qCritical() << "Must provide one or more inputs and one output";
+    parser.showHelp(1);
+  }
+
+  const QString& output = paths.last();
+
+  if (QFile::exists(output)) {
+    qCritical() << "File" << output << "exists, will not overwrite it.";
     return 2;
   }
 
-  GRT::DTW classifier(useScaling, useNullRejection, nullRejectionCoeff, 0,
-                      dtwConstrain, radius, offsetUsingFirstSample,
-                      useSmoothing, smoothingFactor,
-                      nullRejectionLikelihoodThreshold);
+  GRT::TimeSeriesClassificationData allData;
+  allData.setAllowNullGestureClass(false);
+  allData.setNumDimensions(NUM_DIMENSIONS);
+
+  for (int i = 0; i < paths.length() - 1; ++i) {
+    // For each given input... (all pathnames except the last are inputs; the last is the output)
+
+    GRT::TimeSeriesClassificationData data;
+    const QString& input = paths[i];
+
+    if (data.load(input.toStdString())) {
+      qInfo() << "Loaded data file" << input;
+    }
+    else {
+      qCritical() << "Failed to load" << input;
+      return 2;
+    }
+
+    if (allData.merge(data)) {
+      qInfo() << "Merged data file" << input;
+    }
+    else {
+      qCritical() << "Failed to merge" << input << "into common data set";
+      return 2;
+    }
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  GRT::DTW classifier(
+    useScaling,
+    useNullRejection,
+    nullRejectionCoeff,
+    rejectionMode,
+    dtwConstrain,
+    radius,
+    offsetUsingFirstSample,
+    useSmoothing,
+    smoothingFactor,
+    nullRejectionLikelihoodThreshold
+  );
+  // TODO: There are some other options in the base class, use those too
 
   if (!classifier.enableTrimTrainingData(trimTrainingData, trimThreshold, maximumTrimPercentage)) {
     qCritical() << "Failed to set trim parameters for training data";
     return 2;
   }
 
-  if (!classifier.train(data) ){
-    qCritical() << "Failed to train classifier with data loaded from" << input;
+  if (!classifier.train(allData)) {
+    qCritical() << "Failed to train classifier with data loaded from" << paths;
     return 2;
   }
 
-  if (!classifier.save(output.toStdString())){
+  if (classifier.save(output.toStdString())) {
+    qInfo() << "Saved classifier model to" << output;
+  }
+  else {
     qCritical() << "Failed to save classifier model to" << output;
     return 2;
   }
