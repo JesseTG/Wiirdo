@@ -70,5 +70,6 @@ Vagrant.configure("2") do |config|
     make install
 
     echo "/opt/qt58/bin/qt58-env.sh" >> /etc/profile
+    echo "/opt/qt58/bin/qt58-env.sh" >> ~/.profile
   SHELL
 end
