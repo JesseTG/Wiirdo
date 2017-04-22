@@ -20,13 +20,13 @@ WiiRemote::~WiiRemote() {
 }
 
 void WiiRemote::update() {
-  this->batteryChanged();
+  emit batteryChanged();
 
   Accelerometer* accelerometer = this->getAccelerometer();
 
-  accelerometer->gravityChanged();
-  accelerometer->orientationChanged();
-  accelerometer->gravityRawChanged();
+  emit accelerometer->gravityChanged();
+  emit accelerometer->orientationChanged();
+  emit accelerometer->gravityRawChanged();
   accelerometer->updateFilters();
 }
 
@@ -41,7 +41,7 @@ void WiiRemote::setAccelerometerEnabled(bool isUsing) {
 
     wiiuse_motion_sensing(wiimote, isUsing);
 
-    accelerometerEnabledChanged(isUsing);
+    emit accelerometerEnabledChanged(isUsing);
   }
 }
 
@@ -70,7 +70,7 @@ void WiiRemote::setMotionPlusEnabled(bool isUsing) {
   if (isUsing != current) {
     wiiuse_set_motion_plus(wiimote, isUsing); // TODO: isUsing should really be an int, because of nunchuck passthrough
 
-    motionPlusEnabledChanged(isUsing);
+    emit motionPlusEnabledChanged(isUsing);
   }
 }
 
