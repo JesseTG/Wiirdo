@@ -53,6 +53,7 @@ Vagrant.configure("2") do |config|
       qt58sensors \
       qt58svg \
       qt58tools \
+      qt58x11extras \
       upx-ucl \
       virtualbox-guest-dkms \
       virtualbox-guest-utils \
