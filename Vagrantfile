@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update -q
     apt-get install -qy software-properties-common
-    apt-mark hold grub*
+    apt-mark hold grub* libreoffice*
     add-apt-repository -y ppa:beineri/opt-qt58-xenial
     add-apt-repository -y ppa:ubuntu-toolchain-r/test
     apt-get update -q
