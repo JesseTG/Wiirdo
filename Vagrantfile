@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
       cmake-extras \
       extra-cmake-modules \
       freeglut* \
-      g++ \
+      g++-6 \
       gcc-6 \
       git \
       libbluetooth* \
