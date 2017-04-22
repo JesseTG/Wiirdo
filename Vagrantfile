@@ -63,5 +63,7 @@ Vagrant.configure("2") do |config|
     cd /vagrant/wiiuse
     cmake . -DCMAKE_BUILD_TYPE=Release
     make install
+
+    echo "export PATH=/opt/qt58/bin:$PATH" >> /etc/profile
   SHELL
 end
