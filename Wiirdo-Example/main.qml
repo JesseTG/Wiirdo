@@ -82,16 +82,19 @@ Item {
             var gravity = wiimote.accelerometer.gravity;
             var gravityRaw = wiimote.accelerometer.gravityRaw;
             var orientation = wiimote.accelerometer.orientation;
-            return "Gravity: (%1, %2, %3)\nGravity (Raw): (%4, %5, %6)\nOrientation: (Pitch=%7, Roll=%8, Yaw=%9)"
+            return "Gravity: (%1, %2, %3)\n"
               .arg(gravity.x.toFixed(2))
               .arg(gravity.y.toFixed(2))
-              .arg(gravity.y.toFixed(2))
+              .arg(gravity.y.toFixed(2)) +
+            "Gravity (Raw): (%1, %2, %3)\n"
               .arg(gravityRaw.x.toFixed(2))
               .arg(gravityRaw.y.toFixed(2))
-              .arg(gravityRaw.z.toFixed(2))
+              .arg(gravityRaw.z.toFixed(2)) +
+            "Orientation: (Pitch=%1, Roll=%2, Yaw=%3)\n"
               .arg(orientation.x.toFixed(2))
               .arg(orientation.y.toFixed(2))
-              .arg(orientation.z.toFixed(2));
+              .arg(orientation.z.toFixed(2)) +
+            "A held: %1".arg(wiimote.aHeld);
           }
         }
 

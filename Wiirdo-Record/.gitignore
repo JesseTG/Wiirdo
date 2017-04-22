@@ -1,21 +1,13 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
-.vagrant
-build
-build-[dD]ebug
-build-[rR]elease
-*.model
-/*.csv
-*.log_features
-
 *~
 *.autosave
 *.a
 *.core
 *.moc
 *.o
-*.lib
+*.obj
 *.orig
 *.rej
 *.so

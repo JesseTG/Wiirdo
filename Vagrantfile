@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update -q
     apt-get install -qy software-properties-common
-    apt-mark hold grub*
+    apt-mark hold grub* libreoffice*
     add-apt-repository -y ppa:beineri/opt-qt58-xenial
     add-apt-repository -y ppa:ubuntu-toolchain-r/test
     apt-get update -q
@@ -33,8 +33,6 @@ Vagrant.configure("2") do |config|
       cmake-extras \
       extra-cmake-modules \
       freeglut* \
-      g++ \
-      gcc-6 \
       git \
       libbluetooth* \
       libboost-all-dev \
@@ -55,13 +53,23 @@ Vagrant.configure("2") do |config|
       qt58sensors \
       qt58svg \
       qt58tools \
+      qt58x11extras \
       upx-ucl \
       virtualbox-guest-dkms \
       virtualbox-guest-utils \
       xvfb \
 
     cd /vagrant/wiiuse
+    git clean -xdf
     cmake . -DCMAKE_BUILD_TYPE=Release
     make install
+
+    cd /vagrant/grt/build
+    git clean -xdf
+    cmake . -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=False
+    make install
+
+    echo "/opt/qt58/bin/qt58-env.sh" >> /etc/profile
+    echo "/opt/qt58/bin/qt58-env.sh" >> ~/.profile
   SHELL
 end

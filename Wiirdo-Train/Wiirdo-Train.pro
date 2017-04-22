@@ -1,20 +1,15 @@
-TEMPLATE = app
+QT += core
+QT -= gui
 
-QT += qml quick 3dcore 3drender 3dinput 3dlogic 3dextras 3dquick 3dquickextras concurrent x11extras
 CONFIG += c++11
 
+TARGET = Wiirdo-Train
+CONFIG += console
+CONFIG -= app_bundle
+
+TEMPLATE = app
+
 SOURCES += main.cpp
-
-RESOURCES += qml.qrc
-
-OTHER_FILES += \
-  .gitignore \
-
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
-
-# Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -36,7 +31,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 INCLUDEPATH += \
     $$top_srcdir/Wiirdo \
     $$top_srcdir/wiiuse/src \
-    $$top_srcdir/Keysender
 
 CONFIG(release, debug|release) {
   LIBS += \
@@ -44,8 +38,7 @@ CONFIG(release, debug|release) {
 }
 CONFIG(debug, debug|release) {
   LIBS += \
-    -L$$top_builddir/Wiirdo/debug \
-    -L$$top_builddir/Keysender
+    -L$$top_builddir/Wiirdo/debug
 }
 
 LIBS += \
@@ -53,8 +46,4 @@ LIBS += \
     -L$$top_srcdir/wiiuse \
     -L$$top_srcdir/wiiuse/src \
     -L/usr/local/lib \
-    -lWiirdo \
-    -lwiiuse \
-    -lKeysender \
-    -lX11 \
-    -lXtst \
+    -lgrt \

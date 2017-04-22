@@ -1,3 +1,6 @@
 [submodule "wiiuse"]
 	path = wiiuse
 	url = https://github.com/rpavlik/wiiuse
+[submodule "grt"]
+	path = grt
+	url = https://github.com/nickgillian/grt
