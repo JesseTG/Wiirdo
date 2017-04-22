@@ -63,13 +63,12 @@ int main(int argc, char *argv[])
     parser.showHelp(2);
   }
 
-  qInfo() << "Searching for a Wii Remote...";
 
   const QString path = parser.value("output");
   const QString name = parser.value(parser.isSet("name") ? "name" : "output");
   if (QFile::exists(path)) {
     qCritical() << "Will not overwrite existing file" << path;
-    app.exit(2);
+    return 2;
   }
 
   bool ok = true;
@@ -91,7 +90,11 @@ int main(int argc, char *argv[])
     name.toStdString(),
     parser.value("info").toStdString()
   );
-  data->setAllowNullGestureClass(false);
+
+  if (!data->setAllowNullGestureClass(false)) {
+    qCritical() << "Failed to call data->setAllowNullGestureClass(false)";
+    app.exit(1);
+  }
 
   QObject::connect(wii.data(), &Wii::connectionSucceeded, [sampleInterval, timer, wii, recording, sample, nameHash, data, path, name, &app]() {
     const QList<WiiRemote*>& wiimotes = wii->getWiimotesCpp();
@@ -131,7 +134,7 @@ int main(int argc, char *argv[])
       }
     });
 
-    QObject::connect(wiimote, &WiiRemote::aReleased, [recording, path, sample, data, nameHash]() {
+    QObject::connect(wiimote, &WiiRemote::aReleased, [&app, name, recording, path, sample, data, nameHash]() {
       if (*recording) {
         *recording = false;
 
@@ -145,11 +148,16 @@ int main(int argc, char *argv[])
       }
     });
 
-    QObject::connect(wiimote, &WiiRemote::homePressed, [&path, &recording, &data, &app, &timer]() {
+    QObject::connect(wiimote, &WiiRemote::homePressed, [&path, &recording, &data, &app, &timer, name, nameHash]() {
       *recording = false;
       timer->stop();
 
-      if (data->saveDatasetToFile(path.toStdString())) {
+      if (!data->setClassNameForCorrespondingClassLabel(name.toStdString(), nameHash)) {
+        qCritical() << "Failed to set the name for class" << nameHash << "to" << name;
+        app.exit(1);
+      }
+
+      if (data->save(path.toStdString())) {
         qInfo() << "Recorded" << data->getNumSamples() << "samples to" << path;
         app.exit(0);
       }
@@ -175,15 +183,8 @@ int main(int argc, char *argv[])
     // Do any clean-up here
   });
 
+  qInfo() << "Searching for a Wii Remote...";
   wii->findAndConnect(5, true, true);
 
-
-
-  // take arg on command line for gesture file name
-  // look for wiimote
-  // hold a
-  // make gesture
-    // save data in a csv
-  // release a
   return app.exec();
 }
