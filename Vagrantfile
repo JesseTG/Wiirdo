@@ -38,6 +38,9 @@ Vagrant.configure("2") do |config|
       libboost-all-dev \
       libgl{,u}1-mesa-dev \
       libsdl*1.2* \
+      libx11-xcb-dev \
+      libxcb-keysyms1-dev \
+      libxcb-xtest0-dev \
       linux-headers-$(uname -r) \
       mesa-common-dev \
       qt583d \

@@ -1,7 +1,7 @@
 TARGET = Keysender
 TEMPLATE = lib
 CONFIG += staticlib c++11
-QT += core gui gui-private
+QT += core gui
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -34,10 +34,10 @@ macx {
 }
 
 linux {
-  QT += x11extras
   SOURCES += Keysender-linux.cpp
   LIBS += \
       -L/usr/local/lib \
       -lX11 \
       -lXtst \
+
 }

@@ -1,32 +1,33 @@
 #include "Keysender.hpp"
 
 #ifdef Q_OS_LINUX
-#include <exception>
+#include <QtDebug>
 #include <QtGlobal>
 #include <X11/keysym.h>
 #include <X11/XF86keysym.h>
 #include <X11/extensions/XTest.h>
-#include <QX11Info>
 
 // regex: (?!\/\/)((?>X[KF]|0x)[\w\d_]+),\s*(Qt::[\w\d_]+),
 namespace wiirdo {
-unsigned int qtKeyToNativeKey(unsigned int qtKey);
 
-Keysender::Keysender(QObject *parent) : QObject(parent), x11(QX11Info::display())
+unsigned int qtKeyToNativeKey(unsigned int qtKey);
+bool keyEvent(Display* x11, Qt::Key key, Qt::KeyboardModifiers modifiers, bool down);
+
+Keysender::Keysender(QObject *parent) : QObject(parent), x11(XOpenDisplay(nullptr))
 {
+  // XTestFakeKeyEvent(x11, 0, 0, 0); TODO: Do a proper test and throw if it fails
 }
 
 Keysender::~Keysender() {
+  XCloseDisplay(x11);
 }
 
-bool Keysender::keyPress(uint64_t key, int modifiers) {
-  bool success = XTestFakeKeyEvent(x11, qtKeyToNativeKey(key), true, 0);
-  success &= XFlush(x11);
-  return success;
+bool Keysender::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
+  return keyEvent(x11, key, modifiers, true);
 }
 
-bool Keysender::keyRelease(const QKeyEvent& event) {
-  return false;
+bool Keysender::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) {
+  return keyEvent(x11, key, modifiers, false);
 }
 
 bool Keysender::keyShortcutOverride(const QKeyEvent& event) {
@@ -43,6 +44,34 @@ bool Keysender::wheelEvent(const QWheelEvent& event) {
 
 bool Keysender::shortcutEvent(const QShortcutEvent& event) {
   return false;
+}
+
+bool keyEvent(Display* x11, Qt::Key key, Qt::KeyboardModifiers modifiers, bool down) {
+  // TODO: Support modifiers
+
+  if (x11 == nullptr) {
+    // If we don't have a valid X11 display to begin with...
+    return false;
+  }
+  else if (key == Qt::Key_unknown) {
+    // Else if we're using an entirely foreign key...
+    return false;
+  }
+
+  KeyCode code = XKeysymToKeycode(x11, qtKeyToNativeKey(key));
+
+  if (code == 0) {
+    // If the key code we want to send out is unknown...
+    return false;
+  }
+
+  if (!XTestFakeKeyEvent(x11, code, down, 0)) {
+    // If the key event failed...
+    return false;
+  }
+  XFlush(x11);
+
+  return true;
 }
 
 // taken from qtbase/src/plugins/platforms/xcb/qxcbkeyboard.cpp
@@ -65,6 +94,7 @@ unsigned int qtKeyToNativeKey(unsigned int qtKey) {
 
     // cursor movement
 
+  case Qt::Key_L: return XK_L;
   case Qt::Key_Home: return XK_Home;
   case Qt::Key_End: return XK_End;
   case Qt::Key_Left: return XK_Left;

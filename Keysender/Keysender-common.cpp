@@ -13,9 +13,9 @@ namespace wiirdo {
 bool Keysender::send(const QEvent& event) {
   switch (event.type()) {
   case QEvent::KeyPress:
-//    return keyPress(static_cast<const QKeyEvent&>(event));
+    return keyPress(static_cast<Qt::Key>(static_cast<const QKeyEvent&>(event).key()));
   case QEvent::KeyRelease:
-    return keyRelease(static_cast<const QKeyEvent&>(event));
+    return keyRelease(static_cast<Qt::Key>(static_cast<const QKeyEvent&>(event).key()));
   case QEvent::ShortcutOverride:
     return keyShortcutOverride(static_cast<const QKeyEvent&>(event));
 

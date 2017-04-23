@@ -7,7 +7,7 @@
 #include <QMouseEvent>
 
 #ifdef Q_OS_LINUX
-typedef struct _XDisplay Display;
+struct _XDisplay;
 #endif
 
 namespace wiirdo {
@@ -24,16 +24,17 @@ public:
 
 public slots:
   bool send(const QEvent& event);
-  bool keyPress(uint64_t key, int modifiers);
-  bool keyRelease(const QKeyEvent& event);
-  bool keyShortcutOverride(const QKeyEvent& event);
+  bool keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers=Qt::NoModifier);
+  bool keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers=Qt::NoModifier);
 
+  // To be implemented at a later date
+  bool keyShortcutOverride(const QKeyEvent& event);
   bool shortcutEvent(const QShortcutEvent& event);
   bool mouseEvent(const QMouseEvent& event);
   bool wheelEvent(const QWheelEvent& event);
 private:
 #ifdef Q_OS_LINUX
-  Display* x11;
+  _XDisplay* x11;
 #endif
 };
 }
