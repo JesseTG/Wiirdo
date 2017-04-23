@@ -10,9 +10,11 @@ SUBDIRS += \
     Wiirdo-Example \
     Wiirdo \
     Keysender \
+    Keysender-Test \
     Wiirdo-Record \
     Wiirdo-Train \
 
+Keysender-Test.depends = Keysender
 Wiirdo-Example.depends = Wiirdo
 Wiirdo-Record.depends = Wiirdo
 Wiirdo-Train.depends = Wiirdo-Record
