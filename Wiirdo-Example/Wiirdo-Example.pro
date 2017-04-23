@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick 3dcore 3drender 3dinput 3dlogic 3dextras 3dquick 3dquickextras concurrent x11extras
+QT += qml quick 3dcore 3drender 3dinput 3dlogic 3dextras 3dquick 3dquickextras concurrent
 CONFIG += c++11
 
 SOURCES += main.cpp
@@ -55,6 +55,3 @@ LIBS += \
     -L/usr/local/lib \
     -lWiirdo \
     -lwiiuse \
-    -lKeysender \
-    -lX11 \
-    -lXtst \
