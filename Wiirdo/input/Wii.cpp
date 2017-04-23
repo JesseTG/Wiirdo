@@ -1,7 +1,15 @@
 #include "Wii.hpp"
-
 #include <QtConcurrent>
+#include <iostream>
+#include <stdio.h>
+#include <QKeyEvent>
+#include <QCoreApplication>
+#include <QQuickItem>
+#include <QGuiApplication>
+#include <Windows.h>
+#include <QtQuickControls2/QtQuickControls2>
 
+#pragma comment(lib, "user32.lib")
 
 namespace wii {
 
@@ -65,6 +73,190 @@ void Wii::poll()  {
   for (WiiRemote* wiimote : this->_qwiimotes) {
     wiimote->update();
   }
+}
+
+void Wii::click(){
+
+
+
+}
+
+void Wii::Win_Menu(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_LCONTROL,
+                          0xA2,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+             keybd_event( VK_ESCAPE,
+                          0x1B,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_LCONTROL,
+                          0xA2,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+             keybd_event( VK_ESCAPE,
+                          0x1B,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
+void Wii::Win_TaskManager(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_LCONTROL,
+                          0xA2,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+             keybd_event( VK_LSHIFT,
+                          0xA0,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+             keybd_event( VK_ESCAPE,
+                          0x1B,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_LCONTROL,
+                          0xA2,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+             keybd_event( VK_LSHIFT,
+                          0xA0,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+             keybd_event( VK_ESCAPE,
+                          0x1B,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
+
+void Wii::Win_Apps(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MENU,
+                          0x12,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+             keybd_event( VK_TAB,
+                          0x09,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MENU,
+                          0x12,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+             keybd_event( VK_TAB,
+                          0x09,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
+void Wii::Win_Mute(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_VOLUME_MUTE,
+                          0xAD,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+             /*keybd_event( VK_ESCAPE,
+                          0x1B,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );*/
+
+         // Simulate a key release
+             keybd_event( VK_VOLUME_MUTE,
+                          0xAD,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+             /*keybd_event( VK_ESCAPE,
+                          0x1B,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);*/
+}
+
+
+void Wii::Music_Play(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MEDIA_PLAY_PAUSE,
+                          0xB3,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MEDIA_PLAY_PAUSE,
+                          0xB3,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
+void Wii::Music_Pause(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MEDIA_PLAY_PAUSE,
+                          0xB3,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MEDIA_PLAY_PAUSE,
+                          0xB3,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
+void Wii::Music_Next(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MEDIA_NEXT_TRACK,
+                          0xB0,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MEDIA_NEXT_TRACK,
+                          0xB0,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
+}
+
+void Wii::Music_Previous(){
+    BYTE keyState[256];
+    GetKeyboardState((LPBYTE)&keyState);
+
+          // Simulate a key press
+             keybd_event( VK_MEDIA_PREV_TRACK,
+                          0xB1,
+                          KEYEVENTF_EXTENDEDKEY | 0,
+                          0 );
+
+         // Simulate a key release
+             keybd_event( VK_MEDIA_PREV_TRACK,
+                          0xB1,
+                          KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP,
+                          0);
 }
 
 }
