@@ -46,6 +46,7 @@ LIBS += \
     -L$$top_builddir/Wiirdo \
     -L$$top_srcdir/wiiuse \
     -L$$top_srcdir/wiiuse/src \
+    -L$$top_srcdir/grt \
     -L/usr/local/lib \
     -lWiirdo \
     -lwiiuse \
