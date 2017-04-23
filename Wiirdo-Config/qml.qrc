@@ -6,5 +6,6 @@
         <file>WindowsMenuForm.ui.qml</file>
         <file>MediaPlayer.qml</file>
         <file>MediaPlayerForm.ui.qml</file>
+        <file>Animation.qml</file>
     </qresource>
 </RCC>

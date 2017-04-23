@@ -75,10 +75,22 @@ void Wii::poll()  {
   }
 }
 
-void Wii::click(){
-
-
-
+void Wii::click(int a, int b, int c, int d, int tab){
+    int w[4], m[4];
+    if (tab==1){
+        w[0] = a;
+        w[1] = b;
+        w[2] = c;
+        w[3] = d;
+        std::cout<<(w[0]);
+    }
+    else if(tab==2){
+        m[0] = a;
+        m[1] = b;
+        m[2] = c;
+        m[3] = d;
+        std::cout<<(m[0]);
+    }
 }
 
 void Wii::Win_Menu(){

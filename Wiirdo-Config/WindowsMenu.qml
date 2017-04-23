@@ -121,7 +121,7 @@ Item {
                 height: 31
                 text: qsTr("Activate")
                 onClicked: {
-                    wii.click();
+                    wii.click(comboBox.currentIndex, comboBox1.currentIndex, comboBox2.currentIndex, comboBox3.currentIndex, 1);
                 }
             }
         }

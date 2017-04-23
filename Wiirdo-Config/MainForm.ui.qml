@@ -19,14 +19,16 @@ Item {
     height: 400
 
     TabView {
+        id: tabview
         height: 400
         width: 603
         Tab {
-            id: tab
+            id: wintab
             source: "WindowsMenu.qml"
             title: "Windows"
         }
         Tab {
+            id: mediatab
             source: "MediaPlayer.qml"
             title: "Media Player"
         }

@@ -38,7 +38,7 @@ signals:
 public slots:
   void findAndConnect(int timeout = 5, bool rumbleAck = true, bool autoreconnect = false);
   void poll();
-  void click();
+  void click(int a, int b, int c, int d, int tab);
   void Win_Menu();
   void Win_TaskManager();
   void Win_Apps();

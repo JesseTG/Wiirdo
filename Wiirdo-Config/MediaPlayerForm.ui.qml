@@ -114,9 +114,6 @@ Item {
                 width: 344
                 height: 31
                 text: qsTr("Activate")
-                //onReleased: {
-                //wii.click();
-                //}
             }
         }
     }
