@@ -1,15 +1,17 @@
-QT += core
-QT -= gui
-
-CONFIG += c++11
-
-TARGET = Wiirdo-Train
-CONFIG += console
-CONFIG -= app_bundle
-
 TEMPLATE = app
 
+QT += qml quick concurrent quickcontrols2
+CONFIG += c++11
+
 SOURCES += main.cpp
+
+RESOURCES += qml.qrc
+
+# Additional import path used to resolve QML modules in Qt Creator's code model
+QML_IMPORT_PATH =
+
+# Additional import path used to resolve QML modules just for Qt Quick Designer
+QML_DESIGNER_IMPORT_PATH =
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -27,11 +29,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-
 INCLUDEPATH += \
     $$top_srcdir/Wiirdo \
     $$top_srcdir/wiiuse/src \
-    $$top_srcdir/grt \
 
 CONFIG(release, debug|release) {
   LIBS += \
@@ -46,6 +46,6 @@ LIBS += \
     -L$$top_builddir/Wiirdo \
     -L$$top_srcdir/wiiuse \
     -L$$top_srcdir/wiiuse/src \
-    -L$$top_srcdir/grt \
     -L/usr/local/lib \
-    -lgrt \
+    -lWiirdo \
+    -lwiiuse \

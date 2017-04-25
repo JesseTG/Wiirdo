@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QSharedPointer>
 
+#include <GRT/GRT.h>
 #include <GRT/DataStructures/Vector.h>
 #include <GRT/DataStructures/TimeSeriesClassificationData.h>
 
