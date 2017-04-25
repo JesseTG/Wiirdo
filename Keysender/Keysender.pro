@@ -27,6 +27,7 @@ unix {
 
 win32 {
   SOURCES += Keysender-windows.cpp
+   LIBS += -L$$PWD/Keysender/-lKeysenderd
 }
 
 macx {

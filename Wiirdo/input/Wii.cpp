@@ -6,7 +6,6 @@
 #include <QCoreApplication>
 #include <QQuickItem>
 #include <QGuiApplication>
-#include <Windows.h>
 #include <QtQuickControls2/QtQuickControls2>
 
 #pragma comment(lib, "user32.lib")

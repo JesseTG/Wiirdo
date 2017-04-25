@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QtGlobal>
 
+#include <Windows.h>
 #include <winuser.h>
 
 namespace wiirdo {
@@ -50,7 +51,7 @@ bool Keysender::shortcutEvent(const QShortcutEvent& event) {
 
 
 // taken from /qtbase/src/plugins/platforms/windows/qwindowskeymapper.cpp
-QPair<uint8_t, CommandType> Keysender::qtKeyToNativeKey(unsigned int qtKey) {
+QPair<uint8_t, CommandType> qtKeyToNativeKey(uint8_t qtKey) {
   switch (qtKey) {
   case Qt::Key_0: return {VK_NUMPAD0, Vk};
   case Qt::Key_1: return {VK_NUMPAD1, Vk};

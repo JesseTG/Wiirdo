@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
   QSharedPointer<QTimer> timer = QSharedPointer<QTimer>::create();
   QSharedPointer<Wii> wii = QSharedPointer<Wii>::create();
   QSharedPointer<GRT::MatrixDouble> sample = QSharedPointer<GRT::MatrixDouble>::create();
-  GRT::UINT nameHash = qHash(name, 1);
+  unsigned int nameHash = qHash(name, 1);
   // I dunno of the default of 0 means "use 0 as the seed" or "use the global seed". Best to play it safe
   unsigned int sampleInterval = parser.value("sample-interval").toUInt(&ok);
 
