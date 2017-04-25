@@ -9,10 +9,12 @@ OTHER_FILES += \
 SUBDIRS += \
     Wiirdo-Example \
     Wiirdo \
-    Wiirdo-Config \
     Wiirdo-Record \
     Wiirdo-Train \
+    Keysender \
+    Keysender-Test \
 
+Keysender-Test.depends = Keysender
 Wiirdo-Config.depends = Wiirdo
 Wiirdo-Example.depends = Wiirdo
 Wiirdo-Record.depends = Wiirdo

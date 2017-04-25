@@ -36,6 +36,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 INCLUDEPATH += \
     $$top_srcdir/Wiirdo \
     $$top_srcdir/wiiuse/src \
+    $$top_srcdir/Keysender
 
 CONFIG(release, debug|release) {
   LIBS += \
@@ -43,7 +44,8 @@ CONFIG(release, debug|release) {
 }
 CONFIG(debug, debug|release) {
   LIBS += \
-    -L$$top_builddir/Wiirdo/debug
+    -L$$top_builddir/Wiirdo/debug \
+    -L$$top_builddir/Keysender
 }
 
 LIBS += \

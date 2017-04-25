@@ -38,6 +38,9 @@ Vagrant.configure("2") do |config|
       libboost-all-dev \
       libgl{,u}1-mesa-dev \
       libsdl*1.2* \
+      libx11-xcb-dev \
+      libxcb-keysyms1-dev \
+      libxcb-xtest0-dev \
       linux-headers-$(uname -r) \
       mesa-common-dev \
       qt583d \
@@ -69,7 +72,7 @@ Vagrant.configure("2") do |config|
     cmake . -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=False
     make install
 
-    echo "/opt/qt58/bin/qt58-env.sh" >> /etc/profile
-    echo "/opt/qt58/bin/qt58-env.sh" >> ~/.profile
+    echo "source /opt/qt58/bin/qt58-env.sh" >> /etc/profile
+    echo "source /opt/qt58/bin/qt58-env.sh" >> ~/.profile
   SHELL
 end

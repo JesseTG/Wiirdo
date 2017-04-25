@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQuickView>
+#include <QKeyEvent>
 
 #include "input/WiiRemote.hpp"
 #include "input/Wii.hpp"
