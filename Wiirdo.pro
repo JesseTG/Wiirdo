@@ -65,3 +65,21 @@ else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/./Ke
 else:unix: PRE_TARGETDEPS += $$PWD/./libKeysender.a
 
 unix|win32: LIBS += -lKeysender
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./ -lKeysender
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./ -lKeysenderd
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/./libKeysender.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/./libKeysenderd.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/./Keysender.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/./Keysenderd.lib
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/grt/ -lgrt
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/grt/ -lgrtd
+else:unix: LIBS += -L$$PWD/grt/ -lgrt
+
+INCLUDEPATH += $$PWD/grt
+DEPENDPATH += $$PWD/grt
